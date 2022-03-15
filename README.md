@@ -13,11 +13,13 @@ A Snakemake workflow for `parameterstudies in cfd-simulations`
 2) activate the environmnent ("conda activate ntrflows_conda")
 3) install mamba in conda environment using "conda install -c conda-forge mamba"
 4) install snakemake and snakedeploy using mamba "mamba create -c bioconda -c conda-forge --name ntrflows_mamba snakemake snakedeploy"
-5) deploy workflow "cd path/to/project-workdir && snakedeploy deploy-workflow https://github.com/MaNyh/NTRFlows . --tag null"
-6) tbd: provide resources in "resources/"
-7) tbd: configure workflow using any unix-editor "nano config/config.yaml"
-8) run workflow using "snakemake -c1"
-9) view results in "results/"
+5) source your bashrc to initialize mamba "source ~/.bashrc"
+6) activate the mamba-environment "mamba activate ntrflows_mamba"
+7) deploy workflow "cd path/to/project-workdir && snakedeploy deploy-workflow https://github.com/MaNyh/NTRFlows . --tag null"
+8) tbd: provide resources in "resources/"
+9) tbd: configure workflow using any unix-editor "nano config/config.yaml"
+10) run workflow using "snakemake -c1"
+11) view results in "results/"
 
 or 
 
@@ -27,6 +29,8 @@ foo@bar:/path/to/project-workdir$ conda create -n ntrflows_conda
 foo@bar:/path/to/project-workdir$ conda activate ntrflows_conda
 foo@bar:/path/to/project-workdir$ conda install -c conda-forge mamba
 foo@bar:/path/to/project-workdir$ mamba create -c bioconda -c conda-forge --name ntrflows_mamba snakemake snakedeploy
+foo@bar:/path/to/project-workdir$ source ~/.bashrc
+foo@bar:/path/to/project-workdir$ mamba activate ntrflows_mamba
 foo@bar:/path/to/project-workdir$ snakedeploy deploy-workflow https://github.com/MaNyh/NTRFlows . --tag null
 ```
 
