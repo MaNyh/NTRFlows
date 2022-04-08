@@ -1,10 +1,12 @@
 from snakemake.utils import validate
 
-configfile : "../config/workflowsettings.yaml"
+configfile : "config/workflow_config.yaml"
 validate(config,"schemas/config.schema.yaml")
 
+include: "rules/createcases.smk"
 
-include: "rules/create_cases.smk"
+TEMPLATENAME = config["case_type"]
+TEMPLATEPATH =f"../resources/{TEMPLATENAME}"
 
 rule all:
-    input : *get_casefiles()
+    input : *[f"results/simulations/{instance_pattern}/{file}" for instance_pattern in PARAMSPACE.instance_patterns for file in TEMPLATEFILES]

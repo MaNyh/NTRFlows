@@ -1,7 +1,0 @@
-name: ntrfc-env
-dependencies:
-  - python>=3.8
-  - anaconda
-  - pip
-  - pip:
-    - --editable git+https://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@github.com/MaNyh/NTR.git#egg=NTR

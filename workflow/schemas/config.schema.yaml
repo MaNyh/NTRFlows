@@ -5,12 +5,16 @@ description: snakemake configuration file
 type: object
 
 properties:
-    type: object
-    properties:
-      case_type:
-        type: string
-        pattern : openfoamCompressorCascadeRas
+  case_type:
+    type: string
+    pattern : openfoamCompressorCascadeRas
+  param_schema:
+    type: string
+    pattern: "../schemas/openfoamCompressorCascadeRas/openfoamCompressorCascadeRas_param.schema.yaml"
+    default: "../schemas/openfoamCompressorCascadeRas/openfoamCompressorCascadeRas_param.schema.yaml"
+  option_schema:
+    type: string
+    pattern: "../schemas/openfoamCompressorCascadeRas/openfoamCompressorCascadeRas_option.schema.yaml"
+    default: "../schemas/openfoamCompressorCascadeRas/openfoamCompressorCascadeRas_option.schema.yaml"
 
-    required:
-        - case_type
-
+additionalProperties: false

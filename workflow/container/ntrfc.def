@@ -1,0 +1,40 @@
+Bootstrap: docker
+
+From: nvidia/cuda:10.2-devel-ubuntu18.04
+
+%post
+
+export DEBIAN_FRONTEND=noninteractive
+
+CURDIR=`pwd`
+
+apt-get update
+apt-get install -y tmux nano git wget
+
+apt-get install -y --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+
+apt update && apt install python-qt4 libgl1-mesa-glx -y
+
+apt-get install xvfb -y
+export DISPLAY=:99.0
+export PYVISTA_OFF_SCREEN=true
+export PYVISTA_USE_IPYVTK=true
+Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+
+export PYENV_ROOT=/opt/pyenv
+export PATH="/opt/pyenv/bin:$PATH"
+curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+pyenv install 3.9.10
+echo 'export PATH=/opt/pyenv/versions/3.9.10/bin/:$PATH' >> $SINGULARITY_ENVIRONMENT
+export PATH=/opt/pyenv/versions/3.9.10/bin/:$PATH
+
+pip install --editable git+https://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@github.com/MaNyh/NTRfC.git#egg=NTRfC
+
+
+
+#cd $CURDIR
+#rm -rf $SINGULARITY_ROOTFS/tmp/sing_build_cuda
+
+unset DEBIAN_FRONTEND
+
+ldconfig

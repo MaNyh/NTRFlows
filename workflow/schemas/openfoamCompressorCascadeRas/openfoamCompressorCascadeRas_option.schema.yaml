@@ -6,19 +6,19 @@ type: object
 properties:
 
     molarweight:
-        description: not used in parameterspace
+        description: molar weight
         type: number
         default: 29
     dynvisc:
-        description: not used in parameterspace
+        description: dynamic viscosity
         type: number
         default: 0.000001
     timestep:
-        description: not used in parameterspace
+        description: timestep used in the simulation
         type: number
         default: 0.000001
     turbulence_model:
-        description: not used in parameterspace
+        description: turbulence model
         type: string
         pattern: "sst_turbulence_model"
         default: "sst_turbulence_model"
