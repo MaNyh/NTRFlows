@@ -28,7 +28,7 @@ pyenv install 3.9.10
 echo 'export PATH=/opt/pyenv/versions/3.9.10/bin/:$PATH' >> $SINGULARITY_ENVIRONMENT
 export PATH=/opt/pyenv/versions/3.9.10/bin/:$PATH
 
-pip install --editable git+https://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@github.com/MaNyh/NTRfC.git#egg=NTRfC
+pip install --editable git+https://github.com/MaNyh/NTRfC.git#egg=NTRfC
 
 
 
