@@ -1,3 +1,5 @@
+import json
+
 from snakemake.utils import validate
 from snakemake.utils import Paramspace
 from snakemake import load_configfile
@@ -58,31 +60,43 @@ template = CASE_TEMPLATES[config["case_params"]["case_type"]]
 params = pd.read_csv("config/case_params.tsv",sep="\t")
 validate(params, template.param_schema)
 paramspace = Paramspace(params)
-
-option_config = load_configfile("config/case_options.yaml")
-validate(option_config,template.option_schema)
-
+options = load_configfile("config/case_options.yaml")
+validate(options,template.option_schema)
 
 def get_casefiles():
     files = [f"results/simulations/{instance_pattern}/{file}" for instance_pattern in paramspace.instance_patterns for file
       in template.files]
     return files
 
+rule prep_config_create_case:
+    output:
+        param_config = f"results/simulations/{paramspace.wildcard_pattern}/simparams.json",
+        option_config = f"results/simulations/{paramspace.wildcard_pattern}/options.json"
+    params:
+        simparams = paramspace.instance,
+    run:
+        # import pdb
+        # pdb.set_trace()
+        import numpy as np
+        def np_encoder(object):
+            if isinstance(object,np.generic):
+                return object.item()
+        with open(output.param_config, "w") as fobj:
+            fobj.write(json.dumps(params.simparams,indent=4, default=np_encoder))
+        with open(output.option_config, "w") as fobj:
+            fobj.write(json.dumps(options,indent=4,default=np_encoder))
+
 
 rule create_case:
     input:
-        [f"{template.path}/{file}" for file in template.files]
+        templatefiles=[f"{template.path}/{file}" for file in template.files],
+        param_config=rules.prep_config_create_case.output.param_config,
+        option_config=rules.prep_config_create_case.output.option_config,
     output:
-        # format a wildcard pattern like "alpha~{alpha}/beta~{beta}/gamma~{gamma}"
-        # into a file path, with alpha, beta, gamma being the columns of the data frame
-        *[f"results/simulations/{paramspace.wildcard_pattern}/{file}" for file in template.files]
-    params:
-        # automatically translate the wildcard values into an instance of the param space
-        # in the form of a dict (here: {"alpha": ..., "beta": ..., "gamma": ...})
-        simparams = paramspace.instance
-    # container:
-    #    "conainer/ntrfc.sif"
-    #shell:
-    #    "python scripts/ntrfc_createcase.py --input {input} --output {output} --simparams {params.simparams} --options {option_config}"
-    run:
-        print(params["simparams"])
+        casefiles=[f"results/simulations/{paramspace.wildcard_pattern}/{file}" for file in template.files]
+    container:
+        "workflow/container/ntrfc.sif"
+    shell:
+        """
+        python workflow/scripts/ntrfc_createcase.py --input {input.templatefiles} --output {output.casefiles} --simparams {input.param_config} --options {input.option_config}
+        """
