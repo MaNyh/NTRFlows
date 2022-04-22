@@ -20,9 +20,9 @@ params = args.simparams
 option_config = args.options
 
 with open(params,"r") as fobj:
-    paramsdict = json.loads(fobj.readlines())
+    paramsdict = json.loads(fobj.read())
 
 with open(option_config,"r") as fobj:
-    optionconfigdict = json.loads(fobj.readlines())
+    optionconfigdict = json.loads(fobj.read())
 
 deploy(input, output, paramsdict, optionconfigdict)
