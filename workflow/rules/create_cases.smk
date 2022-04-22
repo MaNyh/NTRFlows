@@ -52,7 +52,6 @@ class case_template:
         return sanity
     """
 
-
 CASE_TEMPLATES = {templatename: case_template(templatename) for templatename in AVAIL_TEMPLATES}
 
 template = CASE_TEMPLATES[config["case_params"]["case_type"]]
