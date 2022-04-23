@@ -8,9 +8,9 @@ rule prep:
         casefiles=[f"results/simulations/{paramspace.wildcard_pattern}/{file}" for file in template.files]
     output:
         mesh = temporary(f"results/simulations/{paramspace.wildcard_pattern}/fluent.msh"),
-        polymeshdirs = directory(f"results/simulations/{paramspace.wildcard_pattern}/constant/polyMesh"),
+        polymeshdir = directory(f"results/simulations/{paramspace.wildcard_pattern}/constant/polyMesh")
     params:
-        casedirs = get_casedirs(),
+        casedirs = f"results/simulations/{paramspace.wildcard_pattern}",
         mesh=f"resources/fluent.msh"
     shell:
         """
@@ -21,10 +21,12 @@ rule prep:
         module load OpenFOAM/v1612+
         source $FOAM_BASH
         
-        cp {params.mesh} {params.casedirs[0]}/.
-        cd {params.casedirs[0]}
+        cp {params.mesh} {params.casedirs}/.
+        cd {params.casedirs}
+
 
         fluent3DMeshToFoam fluent.msh
+        
         #createPatch -overwrite
         #topoSet
         #decposePar
