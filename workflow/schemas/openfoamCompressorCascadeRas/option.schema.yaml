@@ -34,5 +34,9 @@ properties:
         description: not used in parameterspace
         type: number
         default: 1
+    mesh:
+        description: name of the used mesh
+        type: string
+        default: fluent.msh
 
 additionalProperties: false
