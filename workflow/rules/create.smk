@@ -24,8 +24,8 @@ class case_template:
     def __init__(self, name):
         self.name = name
         self.path = f"resources/{name}"
-        self.param_schema = f"../../resources/{name}_param.schema.yaml"
-        self.option_schema = f"../../resources/{name}_option.schema.yaml"
+        self.param_schema = f"../schemas/{name}/param.schema.yaml"
+        self.option_schema = f"../schemas/{name}/option.schema.yaml"
         self.files = [os.path.relpath(fpath, self.path) for fpath in get_filelist_fromdir(self.path)]
 
 

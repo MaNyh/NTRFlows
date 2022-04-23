@@ -4,7 +4,7 @@ configfile : "config/workflowsettings.yaml"
 validate(config,"schemas/config.schema.yaml")
 
 
-include: "rules/create_cases.smk"
+include: "rules/create.smk"
 
 rule all:
     input : *get_casefiles()
