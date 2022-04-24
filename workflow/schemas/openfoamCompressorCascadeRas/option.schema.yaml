@@ -19,8 +19,8 @@ properties:
     turbulence_model:
         description: not used in parameterspace
         type: string
-        pattern: "sst_turbulence_model"
-        default: "sst_turbulence_model"
+        pattern: "kOmegaSST"
+        default: "kOmegaSST"
     startfrom:
         description: not used in parameterspace
         type: string
@@ -38,24 +38,26 @@ properties:
         description: name of the used mesh
         type: string
         default: fluent.msh
-    prep:
-        description: commands to be executed to merge ascii-files with a computational mesh to an executable simulation
+    env:
+        description: environment commands for prep
         type: string
         default: |
-            set +u
-
             module load GCC/4.9.3-2.25
             module load OpenMPI/1.10.2
             module load OpenFOAM/v1612+
             source $FOAM_BASH
-
-            cp {input.mesh} {params.casedirs}/mesh.msh
-            cd {params.casedirs}
-            
+    prep:
+        description: commands to be executed to merge ascii-files with a computational mesh to an executable simulation
+        type: string
+        default: |
             fluent3DMeshToFoam mesh.msh
-
             createPatch -overwrite
             topoSet
             decomposePar
+    run:
+        description: commands to run a simulation
+        type: string
+        default: |
+            rhoPimpleFoam
 
 additionalProperties: false

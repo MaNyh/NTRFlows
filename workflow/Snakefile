@@ -45,6 +45,8 @@ validate(options,template.option_schema)
 def get_meshdirs():
     return [f"results/simulations/{instance_pattern}/constant/polyMesh" for instance_pattern in paramspace.instance_patterns]
 
+def get_results():
+    return [f"results/simulations/{instance_pattern}/haha.txt" for instance_pattern in paramspace.instance_patterns]
 """
 def get_casefiles():
     files = [f"results/simulations/{instance_pattern}/{file}" for instance_pattern in paramspace.instance_patterns for file
@@ -54,9 +56,10 @@ def get_casefiles():
 
 include: "rules/create.smk"
 include: "rules/prep.smk"
+include: "rules/execute.smk"
 
 rule all:
     input :
         #*get_casefiles(),
-        *get_meshdirs(),
-
+        #*get_meshdirs(),
+        *get_results()
