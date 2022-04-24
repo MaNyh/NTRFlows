@@ -1,12 +1,4 @@
 
-def get_casefiles():
-    files = [f"results/simulations/{instance_pattern}/{file}" for instance_pattern in paramspace.instance_patterns for file
-      in template.files]
-    return files
-
-def get_casedirs():
-    dirs = [f"results/simulations/{instance_pattern}" for instance_pattern in paramspace.instance_patterns]
-    return dirs
 
 rule prep_config_create_case:
     output:

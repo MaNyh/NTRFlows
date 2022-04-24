@@ -29,7 +29,7 @@ properties:
     zspan:
         description: not used in parameterspace
         type: number
-        default: 0.0025
+        default: 0.004
     processors:
         description: not used in parameterspace
         type: number
@@ -38,5 +38,24 @@ properties:
         description: name of the used mesh
         type: string
         default: fluent.msh
+    prep:
+        description: commands to be executed to merge ascii-files with a computational mesh to an executable simulation
+        type: string
+        default: |
+            set +u
+
+            module load GCC/4.9.3-2.25
+            module load OpenMPI/1.10.2
+            module load OpenFOAM/v1612+
+            source $FOAM_BASH
+
+            cp {input.mesh} {params.casedirs}/mesh.msh
+            cd {params.casedirs}
+            
+            fluent3DMeshToFoam mesh.msh
+
+            createPatch -overwrite
+            topoSet
+            decomposePar
 
 additionalProperties: false
