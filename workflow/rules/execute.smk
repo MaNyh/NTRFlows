@@ -1,6 +1,6 @@
 rule execute:
     input:
-        polymeshdir = directory(f"results/simulations/{paramspace.wildcard_pattern}/constant/polyMesh")
+        polymeshdir = f"results/simulations/{paramspace.wildcard_pattern}/constant/polyMesh"
     output:
         resultfiles = f"results/simulations/{paramspace.wildcard_pattern}/haha.txt"
     params:
