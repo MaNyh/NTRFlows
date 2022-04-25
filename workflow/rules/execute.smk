@@ -2,15 +2,20 @@ rule execute:
     input:
         polymeshdir = f"results/simulations/{paramspace.wildcard_pattern}/constant/polyMesh"
     output:
-        resultfiles = f"results/simulations/{paramspace.wildcard_pattern}/haha.txt"
+        resultfiles = [directory(f"results/simulations/{paramspace.wildcard_pattern}/{proc}/{options['endtime']}")
+                                 for proc in [f"processor{id}" for id in range(1,options["processors"]+1)]]
     params:
-        casedirs = f"results/simulations/{paramspace.wildcard_pattern}",
+        casedirs = f"results/simulations/{paramspace.wildcard_pattern}/",
         environment = options["env"],
         run = options["run"]
+    threads:
+        options["processors"]
+    resources:
+        attempt=3
     shell:
         """
         set +u
         {params.environment}
         cd {params.casedirs}
-        {params.run}
+        mpirun -np {threads} {params.run}
         """

@@ -34,6 +34,14 @@ properties:
         description: not used in parameterspace
         type: number
         default: 1
+    maxcourant:
+        description: max deltaT in relation to the courant-number (cfl)
+        type: number
+        default: 1
+    endtime:
+        description: simulation time of the transient simulation
+        type: number
+        default: 0.01
     mesh:
         description: name of the used mesh
         type: string

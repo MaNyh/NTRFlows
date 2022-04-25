@@ -23,13 +23,13 @@ startTime       0;
 
 stopAt		    endTime;
 
-endTime         0.6;
+endTime         <OPTION endtime OPTION>;
 
 deltaT          <OPTION timestep OPTION>;
 
-writeControl    timeStep;
+writeControl    runTime;
 
-writeInterval   100;
+writeInterval   #calc "$endTime / 10";
 
 purgeWrite      3;
 
@@ -47,7 +47,7 @@ runTimeModifiable true;
 
 adjustTimeStep  on;
 
-maxCo           50;
+maxCo           <OPTION maxcourant OPTION>;
 
 libs (
 "libfieldFunctionObjects.so"

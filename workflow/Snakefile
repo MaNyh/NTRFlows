@@ -46,7 +46,9 @@ def get_meshdirs():
     return [f"results/simulations/{instance_pattern}/constant/polyMesh" for instance_pattern in paramspace.instance_patterns]
 
 def get_results():
-    return [f"results/simulations/{instance_pattern}/haha.txt" for instance_pattern in paramspace.instance_patterns]
+    return [f"results/simulations/{instance_pattern}/{processor}/{options['endtime']}"
+            for processor in [f"processor{id}" for id in range(1,options["processors"]+1)]
+            for instance_pattern in paramspace.instance_patterns ]
 """
 def get_casefiles():
     files = [f"results/simulations/{instance_pattern}/{file}" for instance_pattern in paramspace.instance_patterns for file
