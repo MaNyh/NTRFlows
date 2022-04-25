@@ -3,7 +3,7 @@ rule execute:
         polymeshdir = f"results/simulations/{paramspace.wildcard_pattern}/constant/polyMesh"
     output:
         resultfiles = [directory(f"results/simulations/{paramspace.wildcard_pattern}/{proc}/{options['endtime']}")
-                                 for proc in [f"processor{id}" for id in range(1,options["processors"]+1)]]
+                                 for proc in [f"processor{id}" for id in range(options["processors"])]]
     params:
         casedirs = f"results/simulations/{paramspace.wildcard_pattern}/",
         environment = options["env"],
