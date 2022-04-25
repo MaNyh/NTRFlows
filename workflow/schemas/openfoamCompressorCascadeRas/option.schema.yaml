@@ -42,10 +42,6 @@ properties:
         description: simulation time of the transient simulation
         type: number
         default: 0.01
-    mesh:
-        description: name of the used mesh
-        type: string
-        default: fluent.msh
     env:
         description: environment commands for prep
         type: string

@@ -1,0 +1,42 @@
+all immediate ChangeTurbulenceSettings --model MNEDITWilcox1988  -spaf KatoLaunder
+
+#R1 gmc BLOCK_10/BLOCK_11
+
+block 9 immediate Update_tmCoeffs productionCoeff <PARAM prod PARAM>
+block 9 immediate Update_tmCoeffs diffusionCoeff 1
+block 9 immediate Update_tmCoeffs dissipationCoeff 1
+
+block 10 immediate Update_tmCoeffs productionCoeff <PARAM prod PARAM>
+block 10 immediate Update_tmCoeffs diffusionCoeff 1
+block 10 immediate Update_tmCoeffs dissipationCoeff 1
+
+
+#R2 gmc BLOCK_17/BLOCK_18
+
+block 16 immediate Update_tmCoeffs productionCoeff <PARAM prod PARAM>
+block 16 immediate Update_tmCoeffs diffusionCoeff 1
+block 16 immediate Update_tmCoeffs dissipationCoeff 1
+
+block 17 immediate Update_tmCoeffs productionCoeff <PARAM prod PARAM>
+block 17 immediate Update_tmCoeffs diffusionCoeff 1
+block 17 immediate Update_tmCoeffs dissipationCoeff 1
+
+#R3 gmc BLOCK_24/BLOCK_35
+
+block 23 immediate Update_tmCoeffs productionCoeff <PARAM prod PARAM>
+block 23 immediate Update_tmCoeffs diffusionCoeff 1
+block 23 immediate Update_tmCoeffs dissipationCoeff 1
+
+block 24 immediate Update_tmCoeffs productionCoeff <PARAM prod PARAM>
+block 24 immediate Update_tmCoeffs diffusionCoeff 1
+block 24 immediate Update_tmCoeffs dissipationCoeff 1
+
+#R4 gmc BLOCK_31/BLOCK_32
+
+block 30 immediate Update_tmCoeffs productionCoeff <PARAM prod PARAM>
+block 30 immediate Update_tmCoeffs diffusionCoeff 1
+block 30 immediate Update_tmCoeffs dissipationCoeff 1
+
+block 31 immediate Update_tmCoeffs productionCoeff <PARAM prod PARAM>
+block 31 immediate Update_tmCoeffs diffusionCoeff 1
+block 31 immediate Update_tmCoeffs dissipationCoeff 1

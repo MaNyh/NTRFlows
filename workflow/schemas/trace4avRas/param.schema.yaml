@@ -1,0 +1,17 @@
+$schema: "http://json-schema.org/draft-06/schema#"
+
+description: case configuration file
+
+type: object
+properties:
+    massflow:
+        description: massflow outlet
+        type: number
+        default: 10
+    prod:
+        description: turbulence production coeff
+        type: number
+        default: 1.2
+
+
+additionalProperties: false
