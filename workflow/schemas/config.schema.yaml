@@ -10,7 +10,9 @@ properties:
       case_type:
         type: string
         pattern : openfoamCompressorCascadeRas
+      mesh:
+        type: string
 
     required:
         - case_type
-
+        - mesh

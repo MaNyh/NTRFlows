@@ -1,7 +1,7 @@
 rule prep:
     input:
         casefiles=[f"results/simulations/{paramspace.wildcard_pattern}/{file}" for file in template.files],
-        mesh=f"resources/fluent.msh"
+        mesh=config["case_params"]["mesh"]
     output:
         mesh = temporary(f"results/simulations/{paramspace.wildcard_pattern}/mesh.msh"),
         polymeshdir = directory(f"results/simulations/{paramspace.wildcard_pattern}/constant/polyMesh")

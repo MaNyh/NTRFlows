@@ -1,2 +1,3 @@
 case_params:
     case_type: "openfoamCompressorCascadeRas"
+    mesh: "resources/mesh/fluent.msh"

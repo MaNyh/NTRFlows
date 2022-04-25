@@ -8,8 +8,7 @@ import os
 configfile : "config/workflowsettings.yaml"
 validate(config,"schemas/config.schema.yaml")
 
-# todo: if some sort of automated sanity-checks are implemented on the cases, this could be replaced with a parser
-AVAIL_TEMPLATES = [ os.path.basename(f.path) for f in os.scandir("resources") if f.is_dir() ] #["openfoamCompressorCascadeRas"]
+AVAIL_TEMPLATES = [ os.path.basename(f.path) for f in os.scandir("resources/templates") if f.is_dir() ]
 
 def get_filelist_fromdir(path):
     filelist = []
@@ -43,11 +42,12 @@ validate(options,template.option_schema)
 
 
 def get_meshdirs():
-    return [f"results/simulations/{instance_pattern}/constant/polyMesh" for instance_pattern in paramspace.instance_patterns]
+    return [f"results/simulations/{instance_pattern}/constant/polyMesh"
+            for instance_pattern in paramspace.instance_patterns]
 
 def get_results():
     return [f"results/simulations/{instance_pattern}/{processor}/{options['endtime']}"
-            for processor in [f"processor{id}" for id in range(1,options["processors"]+1)]
+            for processor in [f"processor{id}" for id in range(options["processors"])]
             for instance_pattern in paramspace.instance_patterns ]
 """
 def get_casefiles():
