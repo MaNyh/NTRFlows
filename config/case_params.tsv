@@ -1,5 +1,2 @@
-pressure_outlet	pressure_inlet
-101000	100000
-100500	100000
-101500	100000
-100100	100000
+massflow	prod
+10	1.2

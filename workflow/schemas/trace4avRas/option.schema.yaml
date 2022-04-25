@@ -16,14 +16,13 @@ properties:
         description: commands to be executed to merge ascii-files with a computational mesh to an executable simulation
         type: string
         default: |
-            fluent3DMeshToFoam mesh.msh
-            createPatch -overwrite
-            topoSet
-            decomposePar
+            cd input
+            gmcplay TRACE_control_reference.jou
+            cd ..
     run:
         description: commands to run a simulation
         type: string
         default: |
-            rhoPimpleFoam
+            TRACE
 
 additionalProperties: false
