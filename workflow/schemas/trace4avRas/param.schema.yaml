@@ -4,6 +4,15 @@ description: case configuration file
 
 type: object
 properties:
+    region:
+        description: region
+        type: string
+        default: reference
+        pattern: reference|ogrid|clearance
+    rpm:
+        description: rpm of the compressor
+        type: number
+        default: 17700.0
     massflow:
         description: massflow outlet
         type: number

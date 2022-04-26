@@ -13,17 +13,19 @@ properties:
         type: string
         default: |
             sh /home/nhkcmany/TRACE/trace94_sp_profile_own.sh
+
     prep:
         description: commands to be executed to merge ascii-files with a computational mesh to an executable simulation
         type: string
         default: |
             cd input
-            gmcplay TRACE_control_reference.jou
+            cp ../TRACE.cgns .
+            /bigwork/nhkckcen/sw/GMC/gmc_9_3_4/gmcPlay_v9_3_4 prep.jou
             cd ..
     run:
         description: commands to run a simulation
         type: string
         default: |
-            TRACE /input/TRACE.cgns
+            TRACE /input/TRACE.cgns -cntl input/TRACE_control_reference.input
 
 additionalProperties: false
