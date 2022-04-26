@@ -11,10 +11,14 @@ validate(config,"schemas/config.schema.yaml")
 AVAIL_TEMPLATES = [ os.path.basename(f.path) for f in os.scandir("resources/templates") if f.is_dir() ]
 
 def get_filelist_fromdir(path):
+    #import pdb
+    #pdb.set_trace()
+
     filelist = []
     for r, d, f in os.walk(path):
         for file in f:
             filelist.append(os.path.join(r, file))
+
     return filelist
 
 class case_template:
@@ -24,7 +28,7 @@ class case_template:
 
     def __init__(self, name):
         self.name = name
-        self.path = f"resources/{name}"
+        self.path = f"resources/templates/{name}"
         self.param_schema = f"schemas/{name}/param.schema.yaml"
         self.option_schema = f"schemas/{name}/option.schema.yaml"
         self.files = [os.path.relpath(fpath, self.path) for fpath in get_filelist_fromdir(self.path)]
@@ -41,20 +45,37 @@ options = load_configfile("config/case_options.yaml")
 validate(options,template.option_schema)
 
 
-def get_meshdirs():
-    return [f"results/simulations/{instance_pattern}/constant/polyMesh"
-            for instance_pattern in paramspace.instance_patterns]
-
-def get_results():
-    return [f"results/simulations/{instance_pattern}/{processor}/{options['endtime']}"
-            for processor in [f"processor{id}" for id in range(options["processors"])]
-            for instance_pattern in paramspace.instance_patterns ]
-"""
 def get_casefiles():
+    """
+    this method probably (!) can't be used with create_case.smk, as there the wildcards have to be defined from the
+    template-files
+    :return:
+    """
     files = [f"results/simulations/{instance_pattern}/{file}" for instance_pattern in paramspace.instance_patterns for file
       in template.files]
     return files
-"""
+
+def get_defined_sim():
+    if config["case_params"]["case_type"] == "openfoamCompressorCascadeRas":
+        res = f"results/simulations/{paramspace.wildcard_pattern}/constant/polyMesh"
+
+    elif config["case_params"]["case_type"] == "trace4avRas":
+        res = f"results/simulations/{paramspace.wildcard_pattern}/input/sim_preped"
+    else:
+        assert True, "this warning should be handled by snakemake, not assert"
+    return res
+
+def get_results():
+    if config["case_params"]["case_type"]=="openfoamCompressorCascadeRas":
+        res = [directory(f"results/simulations/{paramspace.wildcard_pattern}/{proc}/{options['endtime']}")
+                                 for proc in [f"processor{id}" for id in range(options["processors"])]]
+
+    elif config["case_params"]["case_type"]=="trace4avRas":
+        res = [f"results/simulations/{paramspace.wildcard_pattern}/output/cgns/TRACE.cgns"]
+    else:
+        assert True, "this warning should be handled by snakemake, not assert"
+
+    return res
 
 include: "rules/create.smk"
 include: "rules/prep.smk"
@@ -62,6 +83,6 @@ include: "rules/execute.smk"
 
 rule all:
     input :
-        #*get_casefiles(),
+        *get_casefiles(),
         #*get_meshdirs(),
-        *get_results()
+        #*get_results()

@@ -1,9 +1,10 @@
+
+
 rule execute:
     input:
-        polymeshdir = f"results/simulations/{paramspace.wildcard_pattern}/constant/polyMesh"
+        polymeshdir = get_defined_sim()
     output:
-        resultfiles = [directory(f"results/simulations/{paramspace.wildcard_pattern}/{proc}/{options['endtime']}")
-                                 for proc in [f"processor{id}" for id in range(options["processors"])]]
+        resultfiles = get_results()
     params:
         casedirs = f"results/simulations/{paramspace.wildcard_pattern}/",
         environment = options["env"],

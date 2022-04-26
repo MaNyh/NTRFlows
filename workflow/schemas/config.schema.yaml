@@ -9,7 +9,7 @@ properties:
     properties:
       case_type:
         type: string
-        pattern : openfoamCompressorCascadeRas
+        pattern : openfoamCompressorCascadeRas | trace4avRas
       mesh:
         type: string
 
