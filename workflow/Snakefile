@@ -66,7 +66,13 @@ def get_defined_sim():
 
     return res
 
+
 def get_results():
+    """
+    get list of results dependend on case_params.tsv and the workflowsettings.yaml
+    this list will be used to determine wildcards. wildcards are passed down the rules
+    """
+
     if config["case_params"]["case_type"]=="openfoamCompressorCascadeRas":
         res = [directory(f"results/simulations/{instance_pattern}/{proc}/{options['endtime']}")
                                  for proc in [f"processor{id}" for instance_pattern in paramspace.instance_patterns
@@ -95,7 +101,7 @@ so that it is not submitted to the cluster and instead executed on the host node
 https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#resources
 """
 
-localrules: all
+localrules: all, prep_config_create_case, create_case, prep
 
 rule all:
     input :

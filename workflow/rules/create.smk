@@ -4,6 +4,7 @@ rule prep_config_create_case:
         option_config = f"results/simulations/{paramspace.wildcard_pattern}/options.json"
     params:
         simparams = paramspace.instance,
+    threads: 1
     run:
         import numpy as np
         import json
@@ -26,6 +27,7 @@ rule create_case:
         casefiles=[f"results/simulations/{paramspace.wildcard_pattern}/{file}" for file in template.files]
     container:
         "workflow/container/ntrfc.sif"
+    threads: 1
     shell:
         """
         python workflow/scripts/ntrfc_createcase.py --input {input.templatefiles} --output {output.casefiles} --simparams {input.param_config} --options {input.option_config}

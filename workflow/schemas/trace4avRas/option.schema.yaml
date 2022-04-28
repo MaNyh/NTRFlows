@@ -4,10 +4,18 @@ description: case configuration file
 
 type: object
 properties:
+    inlet_pressure:
+        desription: pressure value inlet
+        type: number
+        default: 80000
+    numtimesteps:
+        description: number of timesteps
+        type: number
+        default: 200000
     processors:
         description: number of processors
         type: number
-        default: 55
+        default: 5
     env:
         description: environment commands for prep
         type: string
@@ -22,10 +30,18 @@ properties:
             cp ../TRACE.cgns .
             /bigwork/nhkckcen/sw/GMC/gmc_9_3_4/gmcPlay_v9_3_4 prep.jou
             cd ..
-    run:
+    preexecution:
         description: commands to run a simulation
         type: string
-        default: |
-            TRACE /input/TRACE.cgns -cntl input/TRACE_control_reference.input
+        default: ""
+    executable:
+        description: commands to run a simulation
+        type: string
+        default: TRACE
+    args:
+        description: part of an argument that is fixed. used for -np X
+        type: string
+        default: /input/TRACE.cgns -cntl input/TRACE_control_ogrid.input
+
 
 additionalProperties: false
