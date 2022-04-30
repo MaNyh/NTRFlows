@@ -25,7 +25,7 @@ boundaryField
     {
         type            waveTransmissive;
         gamma           1.4;
-	    value		    uniform <PARAM pressure_inlet PARAM>;
+	    value		    uniform 100000;
 
     }
     OUTLET

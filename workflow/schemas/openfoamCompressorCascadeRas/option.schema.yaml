@@ -4,40 +4,13 @@ description: case configuration file
 
 type: object
 properties:
-    molarweight:
-        description: not used in parameterspace
-        type: number
-        default: 29
-    dynvisc:
-        description: not used in parameterspace
-        type: number
-        default: 0.000001
-    timestep:
-        description: not used in parameterspace
-        type: number
-        default: 0.000001
-    turbulence_model:
-        description: not used in parameterspace
-        type: string
-        pattern: "kOmegaSST"
-        default: "kOmegaSST"
-    startfrom:
-        description: not used in parameterspace
-        type: string
-        pattern: "latestTime|startTime"
-        default: "latestTime"
-    zspan:
-        description: not used in parameterspace
-        type: number
-        default: 0.004
+
+
     processors:
         description: not used in parameterspace
         type: number
         default: 1
-    maxcourant:
-        description: max deltaT in relation to the courant-number (cfl)
-        type: number
-        default: 1
+
     endtime:
         description: simulation time of the transient simulation
         type: number
@@ -58,10 +31,14 @@ properties:
             createPatch -overwrite
             topoSet
             decomposePar
-    run:
+    executable:
         description: commands to run a simulation
         type: string
-        default: |
-            rhoPimpleFoam
+        default: "rhoPimpleFoam"
+    args:
+        description: arguments of the run
+        type: string
+        default: ""
+
 
 additionalProperties: false

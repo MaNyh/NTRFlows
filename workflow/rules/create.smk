@@ -25,8 +25,7 @@ rule create_case:
         option_config=rules.prep_config_create_case.output.option_config,
     output:
         casefiles=[f"results/simulations/{paramspace.wildcard_pattern}/{file}" for file in template.files]
-    container:
-        "workflow/container/ntrfc.sif"
+    container: "library://nyhuma/ntrflows/ntr.sif:latest"
     threads: 1
     shell:
         """

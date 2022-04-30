@@ -24,7 +24,6 @@ def get_filelist_fromdir(path):
 class case_template:
 
     psign = "PARAM"
-    osign = "OPTION"
 
     def __init__(self, name):
         self.name = name
@@ -56,14 +55,7 @@ def get_casefiles():
     return files
 
 def get_defined_sim():
-    if config["case_params"]["case_type"] == "openfoamCompressorCascadeRas":
-        res = [f"results/simulations/{instance_pattern}/constant/polyMesh"  for instance_pattern in paramspace.instance_patterns]
-
-    elif config["case_params"]["case_type"] == "trace4avRas":
-        res = [f"results/simulations/{instance_pattern}/input/TRACE.cgns" for instance_pattern in paramspace.instance_patterns]
-    else:
-        assert True, "this warning should be handled by snakemake, not assert"
-
+    res = [f"results/simulations/{instance_pattern}/input/TRACE.cgns" for instance_pattern in paramspace.instance_patterns]
     return res
 
 
@@ -72,16 +64,8 @@ def get_results():
     get list of results dependend on case_params.tsv and the workflowsettings.yaml
     this list will be used to determine wildcards. wildcards are passed down the rules
     """
+    res = [directory(f"results/simulations/{instance_pattern}/{proc}" for instance_pattern in paramspace.instance_patterns for proc in [f"processor{id}"  for id in range(options["processors"])])]
 
-    if config["case_params"]["case_type"]=="openfoamCompressorCascadeRas":
-        res = [directory(f"results/simulations/{instance_pattern}/{proc}/{options['endtime']}")
-                                 for proc in [f"processor{id}" for instance_pattern in paramspace.instance_patterns
-                                              for id in range(options["processors"])]]
-
-    elif config["case_params"]["case_type"]=="trace4avRas":
-        res = [f"results/simulations/{instance_pattern}/output/cgns/TRACE.cgns" for instance_pattern in paramspace.instance_patterns]
-    else:
-        assert True, "this warning should be handled by snakemake, not assert"
     return res
 
 """

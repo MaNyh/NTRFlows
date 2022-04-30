@@ -13,10 +13,12 @@ rule prep:
         environment = options["env"],
         prepcommands = options["prep"]
     threads: 1
+    container:
+        "docker://openfoamplus/of_v2006_centos73"
     shell:
         """
         set +u
-        {params.environment}
+        #{params.environment}
         cp {input.mesh} {params.casedirs}/.
         cd {params.casedirs}
         {params.prepcommands}

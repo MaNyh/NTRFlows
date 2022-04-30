@@ -29,15 +29,15 @@ boundaryField
     {
         type            waveTransmissive;
 	    gamma		    1.4;
-        value           uniform (<PARAM velocity_inlet_u PARAM> <PARAM velocity_inlet_v PARAM> <PARAM velocity_inlet_z PARAM>);
-	    fieldInf	    <PARAM velocity_inlet_u PARAM> <PARAM velocity_inlet_v PARAM> <PARAM velocity_inlet_z PARAM>;
+        value           uniform (<PARAM velocity_inlet_u PARAM> <PARAM velocity_inlet_v PARAM> 0);
+	    fieldInf	    <PARAM velocity_inlet_u PARAM> <PARAM velocity_inlet_v PARAM> 0;
     }
 
     OUTLET
     {
         type            waveTransmissive;
 	    gamma		    1.4;
-        value           uniform (<PARAM velocity_inlet_u PARAM> <PARAM velocity_inlet_v PARAM> <PARAM velocity_inlet_z PARAM>); //startwert only
+        value           uniform (<PARAM velocity_inlet_u PARAM> <PARAM velocity_inlet_v PARAM> 0); //startwert only
 	    inletValue	    uniform (0 0 0);
     }
 

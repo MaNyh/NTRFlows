@@ -17,15 +17,15 @@ FoamFile
 
 application     rhoPimpleFoam;
 
-startFrom       <OPTION startfrom OPTION>;
+startFrom       startTime;
 
 startTime       0;
 
 stopAt		    endTime;
 
-endTime         <OPTION endtime OPTION>;
+endTime         0.02;
 
-deltaT          <OPTION timestep OPTION>;
+deltaT          0.00001;
 
 writeControl    runTime;
 
@@ -47,7 +47,7 @@ runTimeModifiable true;
 
 adjustTimeStep  on;
 
-maxCo           <OPTION maxcourant OPTION>;
+maxCo           1;
 
 libs (
 "libfieldFunctionObjects.so"

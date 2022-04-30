@@ -13,7 +13,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-omegaInlet <PARAM omega_inlet PARAM>;
+omegaInlet 0.01;
 
 dimensions [0 0 -1 0 0 0 0];
 
