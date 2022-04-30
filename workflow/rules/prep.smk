@@ -3,23 +3,26 @@ rule prep:
         casefiles=[f"results/simulations/{paramspace.wildcard_pattern}/{file}" for file in template.files],
         mesh=config["case_params"]["mesh"]
     output:
-        # todo: the following line is excluded because of ambigiuty between prep and execute. the paramspace-.wildcard_pattern
-        # is reading /output/cgns/TRACE.cgns as a pattern --> ambigious
         # but temporary()
-        #mesh = temporary(f"results/simulations/{paramspace.wildcard_pattern}/TRACE.cgns"),
-        preped = f"results/simulations/{paramspace.wildcard_pattern}/input/TRACE.cgns"
+        mesh = temporary(f"results/simulations/{paramspace.wildcard_pattern}/mesh.msh"),
+        preped = [directory(f"results/simulations/{paramspace.wildcard_pattern}/processor{pid}") for pid in range(options["processors"])]
     params:
         casedirs = f"results/simulations/{paramspace.wildcard_pattern}",
         environment = options["env"],
         prepcommands = options["prep"]
     threads: 1
     container:
-        "docker://openfoamplus/of_v2006_centos73"
+        "docker://openfoamplus/of_v1612plus_centos66"
+    envmodules:
+        "GCC/4.9.3-2.25"
+        "OpenMPI/1.10.2"
+    #OpenFOAM uses unbound variables in bash-scripts. therefor use "set +euo pipefail" to deactivate bash strict mode
     shell:
         """
-        set +u
-        #{params.environment}
-        cp {input.mesh} {params.casedirs}/.
+
+
+        {params.environment}
+        cp {input.mesh} {params.casedirs}/mesh.msh
         cd {params.casedirs}
         {params.prepcommands}
         """

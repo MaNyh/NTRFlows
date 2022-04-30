@@ -36,8 +36,8 @@ CMD tar -xzf singularity-${VERSION}.tar.gz
 CMD cd ./singularity
 CMD ./mconfig
 COPY requirements.txt requirements.txt
-RUN apt-get install python3.9 python-pip
-RUN pip install -r requirements.txt
+RUN apt-get install python3.9 python-pip -y
+CMD pip install -r requirements.txt -y
 EXPOSE 5000
 COPY . .
 CMD ["flask", "run"]

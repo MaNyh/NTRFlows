@@ -55,7 +55,7 @@ def get_casefiles():
     return files
 
 def get_defined_sim():
-    res = [f"results/simulations/{instance_pattern}/input/TRACE.cgns" for instance_pattern in paramspace.instance_patterns]
+    res = [directory(f"results/simulations/{instance_pattern}/{proc}" for instance_pattern in paramspace.instance_patterns for proc in [f"processor{id}"  for id in range(options["processors"])])]
     return res
 
 
@@ -64,8 +64,9 @@ def get_results():
     get list of results dependend on case_params.tsv and the workflowsettings.yaml
     this list will be used to determine wildcards. wildcards are passed down the rules
     """
-    res = [directory(f"results/simulations/{instance_pattern}/{proc}" for instance_pattern in paramspace.instance_patterns for proc in [f"processor{id}"  for id in range(options["processors"])])]
+    res = [directory(f"results/simulations/{paramspace.wildcard_pattern}/asd.ext")]
 
+    print(res)
     return res
 
 """

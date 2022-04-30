@@ -52,7 +52,7 @@ maxCo           1;
 libs (
 "libfieldFunctionObjects.so"
 "libsampling.so"
-"libAdvectiveFields.so"
+//"libAdvectiveFields.so"
 );
 
 
@@ -63,7 +63,6 @@ fieldAverage1
         libs            ("libfieldFunctionObjects.so");
         writeControl    writeTime;
         startTime       1
-
 
         fields
         (
@@ -112,10 +111,9 @@ fieldAverage1
              base 	      time;
 	        }
 
-	);
-  }
+	    );
+    }
 
 
-}
 
 // ************************************************************************* //

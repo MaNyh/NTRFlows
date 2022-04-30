@@ -18,11 +18,7 @@ properties:
     env:
         description: environment commands for prep
         type: string
-        default: |
-            module load GCC/4.9.3-2.25
-            module load OpenMPI/1.10.2
-            module load OpenFOAM/v1612+
-            source $FOAM_BASH
+        default: 'set +euo pipefail;source  /opt/OpenFOAM/setImage_v1612+;set -euo pipefail;'
     prep:
         description: commands to be executed to merge ascii-files with a computational mesh to an executable simulation
         type: string
