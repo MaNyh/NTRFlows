@@ -31,6 +31,10 @@ properties:
             createPatch -overwrite
             topoSet
             decomposePar
+    preexec:
+        description: stuff to do before execution
+        type: string
+        default: ""
     executable:
         description: commands to run a simulation
         type: string

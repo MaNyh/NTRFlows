@@ -11,6 +11,7 @@ rule execute:
         casedirs = f"results/simulations/{paramspace.wildcard_pattern}/",
         environment = options["env"],
         executable = options["executable"],
+        preexec = options["preexec"],
         args = options["args"]
     resources:
         attempt=3,
