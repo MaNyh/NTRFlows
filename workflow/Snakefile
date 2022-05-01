@@ -64,7 +64,8 @@ def get_results():
     get list of results dependend on case_params.tsv and the workflowsettings.yaml
     this list will be used to determine wildcards. wildcards are passed down the rules
     """
-    res = [directory(f"results/simulations/{paramspace.wildcard_pattern}/asd.ext")]
+    print(paramspace.instance_patterns)
+    res = [directory(f"results/simulations/{instance_pattern}/ja")  for instance_pattern in paramspace.instance_patterns]
 
     print(res)
     return res
