@@ -1,4 +1,4 @@
-
+processors: 10
 case_type: "openfoamCompressorCascadeRas"
 mesh: "resources/mesh/fluent.msh"
 env: "set +euo pipefail;source  /opt/OpenFOAM/setImage_v1612+;set -euo pipefail;"

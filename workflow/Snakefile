@@ -28,8 +28,7 @@ class case_template:
     def __init__(self, name):
         self.name = name
         self.path = f"resources/templates/{name}"
-        self.param_schema = f"schemas/{name}/param.schema.yaml"
-        self.option_schema = f"schemas/{name}/option.schema.yaml"
+        self.param_schema = f"schemas/param.schema.yaml"
         self.files = [os.path.relpath(fpath, self.path) for fpath in get_filelist_fromdir(self.path)]
 
 
@@ -40,8 +39,6 @@ template = CASE_TEMPLATES[config["case_type"]]
 params = pd.read_csv("config/case_params.tsv",sep="\t")
 validate(params, template.param_schema)
 paramspace = Paramspace(params)
-options = load_configfile("config/case_options.yaml")
-validate(options,template.option_schema)
 
 
 def get_casefiles():
@@ -55,7 +52,7 @@ def get_casefiles():
     return files
 
 def get_defined_sim():
-    res = [directory(f"results/simulations/{instance_pattern}/{proc}" for instance_pattern in paramspace.instance_patterns for proc in [f"processor{id}"  for id in range(options["processors"])])]
+    res = [directory(f"results/simulations/{instance_pattern}/{proc}" for instance_pattern in paramspace.instance_patterns for proc in [f"processor{id}"  for id in range(config["processors"])])]
     return res
 
 
@@ -64,10 +61,7 @@ def get_results():
     get list of results dependend on case_params.tsv and the workflowsettings.yaml
     this list will be used to determine wildcards. wildcards are passed down the rules
     """
-    print(paramspace.instance_patterns)
     res = [directory(f"results/simulations/{instance_pattern}/ja")  for instance_pattern in paramspace.instance_patterns]
-
-    print(res)
     return res
 
 """

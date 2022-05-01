@@ -1,9 +1,10 @@
 rule prep_config_create_case:
     output:
-        param_config = f"results/simulations/{paramspace.wildcard_pattern}/simparams.json",
-        option_config = f"results/simulations/{paramspace.wildcard_pattern}/options.json"
+        paramfile = f"results/simulations/{paramspace.wildcard_pattern}/paramdict.json",
+        configfile = f"results/simulations/{paramspace.wildcard_pattern}/configdict.json"
     params:
         simparams = paramspace.instance,
+        simconfig = config,
     threads: 1
     run:
         import numpy as np
@@ -12,22 +13,23 @@ rule prep_config_create_case:
             if isinstance(object,np.generic):
                 return object.item()
 
-        with open(output.param_config, "w") as fobj:
+        with open(output.paramfile, "w") as fobj:
             fobj.write(json.dumps(params.simparams,indent=4, default=np_encoder))
-        with open(output.option_config, "w") as fobj:
-            fobj.write(json.dumps(options,indent=4,default=np_encoder))
+
+        with open(output.configfile, "w") as fobj:
+            fobj.write(json.dumps(params.simconfig,indent=4, default=np_encoder))
 
 
 rule create_case:
     input:
         templatefiles=[f"{template.path}/{file}" for file in template.files],
-        param_config=rules.prep_config_create_case.output.param_config,
-        option_config=rules.prep_config_create_case.output.option_config,
+        paramfile=f"results/simulations/{paramspace.wildcard_pattern}/paramdict.json",
+        configfile=f"results/simulations/{paramspace.wildcard_pattern}/configdict.json"
     output:
         casefiles=[f"results/simulations/{paramspace.wildcard_pattern}/{file}" for file in template.files]
     container: "library://nyhuma/ntrflows/ntr.sif:latest"
     threads: 1
     shell:
         """
-        python workflow/scripts/ntrfc_createcase.py --input {input.templatefiles} --output {output.casefiles} --simparams {input.param_config} --options {input.option_config}
+        python workflow/scripts/ntrfc_createcase.py --input {input.templatefiles} --output {output.casefiles} --paramfile {input.paramfile} --configfile {input.configfile}
         """

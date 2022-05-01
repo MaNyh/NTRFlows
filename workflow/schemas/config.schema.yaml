@@ -23,6 +23,9 @@ properties:
   execute:
     description: commands to run a simulation
     type: string
+  processors:
+    description: nop
+    type: number
 
 
 required:

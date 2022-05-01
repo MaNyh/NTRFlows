@@ -16,7 +16,7 @@ FoamFile
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 
-numberOfSubdomains <OPTION processors OPTION>;
+numberOfSubdomains <CONFIG processors CONFIG>;
 
 method          hierarchical;
 
@@ -27,7 +27,7 @@ simpleCoeffs
 
 hierarchicalCoeffs
 {
-    n               (<OPTION processors OPTION> 1 1);
+    n               (<CONFIG processors CONFIG> 1 1);
     delta           0.001;
     order           yxz;
 }
