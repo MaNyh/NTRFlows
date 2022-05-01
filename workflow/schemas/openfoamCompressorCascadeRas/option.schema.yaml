@@ -9,36 +9,12 @@ properties:
     processors:
         description: not used in parameterspace
         type: number
-        default: 1
+        default: 10
 
     endtime:
         description: simulation time of the transient simulation
         type: number
         default: 0.01
-    env:
-        description: environment commands for prep
-        type: string
-        default: 'set +euo pipefail;source  /opt/OpenFOAM/setImage_v1612+;set -euo pipefail;'
-    prep:
-        description: commands to be executed to merge ascii-files with a computational mesh to an executable simulation
-        type: string
-        default: |
-            fluent3DMeshToFoam mesh.msh
-            createPatch -overwrite
-            topoSet
-            decomposePar
-    preexec:
-        description: stuff to do before execution
-        type: string
-        default: ""
-    executable:
-        description: commands to run a simulation
-        type: string
-        default: "rhoPimpleFoam"
-    args:
-        description: arguments of the run
-        type: string
-        default: ""
 
 
 additionalProperties: false

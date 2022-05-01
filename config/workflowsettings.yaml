@@ -1,4 +1,10 @@
-case_params:
-    case_type: "openfoamCompressorCascadeRas"
-    mesh: "resources/mesh/fluent.msh"
 
+case_type: "openfoamCompressorCascadeRas"
+mesh: "resources/mesh/fluent.msh"
+env: "set +euo pipefail;source  /opt/OpenFOAM/setImage_v1612+;set -euo pipefail;"
+prep: |
+      fluent3DMeshToFoam mesh.msh
+      createPatch -overwrite
+      topoSet
+      decomposePar
+execute: "rhoPimpleFoam"

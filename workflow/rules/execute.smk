@@ -9,10 +9,8 @@ rule execute:
     #log: f"results/simulations/{paramspace.wildcard_pattern}/logfile",
     params:
         casedirs = f"results/simulations/{paramspace.wildcard_pattern}/",
-        environment = options["env"],
-        executable = options["executable"],
-        preexec = options["preexec"],
-        args = options["args"]
+        environment = config["env"],
+        execute = config["execute"],
     resources:
         attempt=3,
         mem_mb=32000
@@ -24,5 +22,5 @@ rule execute:
         {params.environment}
         cd {params.casedirs}
         {params.preexec}
-        mpirun -np {threads} {params.executable} {params.args} #> {log}
+        mpirun -np 10 {params.execute} #> {log}
         """

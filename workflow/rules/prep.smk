@@ -1,15 +1,15 @@
 rule prep:
     input:
         casefiles=[f"results/simulations/{paramspace.wildcard_pattern}/{file}" for file in template.files],
-        mesh=config["case_params"]["mesh"]
+        mesh=config["mesh"]
     output:
         # but temporary()
         mesh = temporary(f"results/simulations/{paramspace.wildcard_pattern}/mesh.msh"),
         preped = [directory(f"results/simulations/{paramspace.wildcard_pattern}/processor{pid}") for pid in range(options["processors"])]
     params:
         casedirs = f"results/simulations/{paramspace.wildcard_pattern}",
-        environment = options["env"],
-        prepcommands = options["prep"]
+        environment = config["env"],
+        prepcommands = config["prep"]
     threads: 1
     container:
         "docker://openfoamplus/of_v1612plus_centos66"

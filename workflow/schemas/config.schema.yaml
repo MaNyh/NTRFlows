@@ -5,14 +5,29 @@ description: snakemake configuration file
 type: object
 
 properties:
-    type: object
-    properties:
-      case_type:
-        type: string
-        pattern : openfoamCompressorCascadeRas
-      mesh:
-        type: string
+  case_type:
+    type: string
+    pattern : openfoamCompressorCascadeRas
+  mesh:
+    type: string
+  env:
+    description: environment commands for prep
+    type: string
+  prep:
+    description: commands to be executed to merge ascii-files with a computational mesh to an executable simulation
+    type: string
+  prexec:
+    description: stuff to do before mpirun
+    tyoe: string
+    default: ""
+  execute:
+    description: commands to run a simulation
+    type: string
 
-    required:
-        - case_type
-        - mesh
+
+required:
+    - case_type
+    - mesh
+    - env
+    - prep
+    - execute
