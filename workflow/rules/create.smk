@@ -31,5 +31,5 @@ rule create_case:
     threads: 1
     shell:
         """
-        python workflow/scripts/ntrfc_createcase.py --input {input.templatefiles} --output {output.casefiles} --paramfile {input.paramfile} --configfile {input.configfile}
+        python workflow/scripts/ntr_createcase.py --input {input.templatefiles} --output {output.casefiles} --paramfile {input.paramfile} --configfile {input.configfile}
         """

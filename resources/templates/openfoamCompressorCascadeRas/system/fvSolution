@@ -64,8 +64,8 @@ PIMPLE
     nOuterCorrectors 2;  // 1;	1=PISO 1<PIMPLE
     nCorrectors      1; // 1;	//outer loops
     nNonOrthogonalCorrectors 2;	//p loops
-    rhoMin          0.2;
-    rhoMax          3;
+    pMin          50000;
+    pMax          150000;
     transonic	no;
 }
 

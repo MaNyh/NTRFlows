@@ -8,7 +8,6 @@ import os
 configfile : "config/workflowsettings.yaml"
 validate(config,"schemas/config.schema.yaml")
 
-AVAIL_TEMPLATES = [ os.path.basename(f.path) for f in os.scandir("resources/templates") if f.is_dir() ]
 
 def get_filelist_fromdir(path):
     #import pdb
@@ -23,8 +22,6 @@ def get_filelist_fromdir(path):
 
 class case_template:
 
-    psign = "PARAM"
-
     def __init__(self, name):
         self.name = name
         self.path = f"resources/templates/{name}"
@@ -32,9 +29,8 @@ class case_template:
         self.files = [os.path.relpath(fpath, self.path) for fpath in get_filelist_fromdir(self.path)]
 
 
-CASE_TEMPLATES = {templatename: case_template(templatename) for templatename in AVAIL_TEMPLATES}
 
-template = CASE_TEMPLATES[config["case_type"]]
+template = case_template("openfoamCompressorCascadeRas")
 
 params = pd.read_csv("config/case_params.tsv",sep="\t")
 validate(params, template.param_schema)
@@ -52,7 +48,7 @@ def get_casefiles():
     return files
 
 def get_defined_sim():
-    res = [directory(f"results/simulations/{instance_pattern}/{proc}" for instance_pattern in paramspace.instance_patterns for proc in [f"processor{id}"  for id in range(config["processors"])])]
+    res = [directory(f"results/simulations/{instance_pattern}/{proc}/constant" for instance_pattern in paramspace.instance_patterns for proc in [f"processor{id}"  for id in range(config["processors"])])]
     return res
 
 
@@ -61,7 +57,14 @@ def get_results():
     get list of results dependend on case_params.tsv and the workflowsettings.yaml
     this list will be used to determine wildcards. wildcards are passed down the rules
     """
-    res = [directory(f"results/simulations/{instance_pattern}/ja")  for instance_pattern in paramspace.instance_patterns]
+    res = [f"results/simulations/{instance_pattern}/{proc}/{config['endtime']}/p"
+                                            for instance_pattern in paramspace.instance_patterns
+                                            for proc in [f"processor{id}"  for id in range(config["processors"])]]
+    return res
+
+def get_post():
+    res = [f"results/simulations/{instance_pattern}/bladeloading.csv"
+                                            for instance_pattern in paramspace.instance_patterns]
     return res
 
 """
@@ -70,6 +73,7 @@ include all refactored rules
 include: "rules/create.smk"
 include: "rules/prep.smk"
 include: "rules/execute.smk"
+include: "rules/post.smk"
 
 
 """
@@ -81,10 +85,11 @@ so that it is not submitted to the cluster and instead executed on the host node
 https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#resources
 """
 
-localrules: all, prep_config_create_case, create_case, prep
+localrules: all, prep_config_create_case, create_case, prep, prepost, find_results, bladeloading
 
 rule all:
     input :
         #*get_casefiles(),
         #get_defined_sim(),
-        get_results(),
+        #get_results(),
+        get_post()

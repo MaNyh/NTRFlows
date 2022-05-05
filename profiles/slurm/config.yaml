@@ -1,4 +1,4 @@
-restart-times: 3
+restart-times: 0
 jobscript: "slurm-jobscript.sh"
 cluster: "slurm-submit.py"
 cluster-status: "slurm-status.py"
@@ -7,13 +7,14 @@ max-status-checks-per-second: 10
 local-cores: 1
 latency-wait: 60
 use-singularity: True
+rerun-incomplete: True
 
 # Example resource configuration
 default-resources:
   - runtime=100
-  - mem_mb=6000
+  - mem_mb=12000
   - disk_mb=1000000
-  - nodes=4
+  - nodes=1
   - tasks=10
 # # set-threads: map rule names to threads
 # set-threads:

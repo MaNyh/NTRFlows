@@ -33,7 +33,8 @@ boundaryField
     }
     BLADE
     {
-     	type            zeroGradient;
+        type            nutLowReWallFunction;
+        value           uniform 0.00001;
     }
     Z_lower
     {

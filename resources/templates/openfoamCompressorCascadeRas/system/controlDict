@@ -23,15 +23,15 @@ startTime       0;
 
 stopAt		    endTime;
 
-endTime         0.02;
+endTime         <CONFIG endtime CONFIG>;
 
-deltaT          0.00001;
+deltaT          <CONFIG deltat CONFIG>;
 
-writeControl    runTime;
+writeControl    adjustableRunTime;
 
-writeInterval   #calc "$endTime / 10";
+writeInterval   <CONFIG writeinterval CONFIG>;
 
-purgeWrite      3;
+purgeWrite      2;
 
 writeFormat     ascii;
 
@@ -43,18 +43,16 @@ timeFormat      general;
 
 timePrecision   16;
 
-runTimeModifiable true;
+runTimeModifiable false;
 
 adjustTimeStep  on;
 
-maxCo           1;
+maxCo           <CONFIG courantnumber CONFIG>;
 
 libs (
 "libfieldFunctionObjects.so"
 "libsampling.so"
-//"libAdvectiveFields.so"
 );
-
 
 
 fieldAverage1
