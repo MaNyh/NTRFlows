@@ -15,18 +15,19 @@ rule execute:
     params:
         casedirs = f"results/simulations/{paramspace.wildcard_pattern}/",
         environment = config["env"],
+        processors = config["processors"]
     resources:
         attempt=3,
         mem_mb=32000
-    threads: config["processors"]
     container:
         "docker://openfoamplus/of_v2006_centos73"
+    log: f"logs/{paramspace.wildcard_pattern}/execute.log"
+    threads: config["processors"]
     shell:
         """
-        {params.environment}
+        (
         cd {params.casedirs}
-        #write hostfile
-        echo "" > myhostfile; for var in $SLURM_JOB_NODELIST; do echo $var max_slots={threads} >> myhostfile; done
-        echo $SLURM_JOB_NODELIST max_slots=10 > myhostfile
-        mpirun -hostfile myhostfile --oversubscribe -np {threads} rhoPimpleFoam -parallel > log
+        {params.environment}
+        mpirun --oversubscribe -np {threads} rhoPimpleFoam -parallel
+        ) >> {log}
         """

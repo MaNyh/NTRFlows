@@ -9,13 +9,14 @@ rule prep:
     params:
         casedirs = f"results/simulations/{paramspace.wildcard_pattern}",
         environment = config["env"],
-
+    log: f"logs/{paramspace.wildcard_pattern}/prep.log"
     threads: 1
     container:
         "docker://openfoamplus/of_v2006_centos73"
 
     shell:
         """
+        (
         {params.environment}
         cp {input.mesh} {params.casedirs}/mesh.msh
         cd {params.casedirs}
@@ -23,4 +24,5 @@ rule prep:
         createPatch -overwrite
         topoSet
         decomposePar -force
+        )>> {log}
         """

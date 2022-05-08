@@ -15,12 +15,10 @@ default-resources:
   - mem_mb=12000
   - disk_mb=1000000
   - nodes=1
-  - tasks=10
+#  - ntasks_per_node=1
 # # set-threads: map rule names to threads
-# set-threads:
-#   - single_core_rule=1
-#   - multi_core_rule=10
+#set-threads:
+   #- execute=10
 # # set-resources: map rule names to resources in general
-# set-resources:
-#   - high_memory_rule:mem_mb=12000
-#   - long_running_rule:runtime=1200
+set-resources:
+   - execute:nodes=1
