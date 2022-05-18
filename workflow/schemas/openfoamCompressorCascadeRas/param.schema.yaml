@@ -33,10 +33,6 @@ properties:
         description: used in parameterspace
         type: string
         default: "30"
-    velocity_inlet_z:
-        description: used in parameterspace
-        type: string
-        default: "0"
     pitch:
         description: used in parameterspace
         type: number

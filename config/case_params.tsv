@@ -1,24 +1,8 @@
-massflow	prod	rpm	region
-6.8	1	17100.0	reference
-7	1	17100.0	reference
-7.2	1	17100.0	reference
-7.4	1	17100.0	reference
-7.6	1	17100.0	reference
-7.8	1	17100.0	reference
-8	1	17100.0	reference
-8.2	1	17100.0	reference
-7.6	1	14400.0	reference
-7.8	1	14400.0	reference
-8	1	14400.0	reference
-8.2	1	14400.0	reference
-8.4	1	14400.0	reference
-8.6	1	14400.0	reference
-8.8	1	14400.0	reference
-7.6	1	14400.0	reference
-7.8	1	14400.0	reference
-8	1	14400.0	reference
-8.2	1	14400.0	reference
-8.4	1	14400.0	reference
-8.6	1	14400.0	reference
-8.8	1	14400.0	reference
+pressure_outlet	pressure_inlet
+120000	100000
+123000	123123
+123000	123110
+123000	123122
+120000	123110
+120000	123122
 

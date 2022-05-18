@@ -8,12 +8,11 @@ import os
 configfile : "config/workflowsettings.yaml"
 validate(config,"schemas/config.schema.yaml")
 
-AVAIL_TEMPLATES = [ os.path.basename(f.path) for f in os.scandir("resources/templates") if f.is_dir() ]
+AVAIL_TEMPLATES = [os.path.basename(f.path) for f in os.scandir("resources/templates") if f.is_dir()]
 
 def get_filelist_fromdir(path):
     #import pdb
     #pdb.set_trace()
-
     filelist = []
     for r, d, f in os.walk(path):
         for file in f:
@@ -55,28 +54,48 @@ def get_casefiles():
       in template.files]
     return files
 
-def get_defined_sim():
-    if config["case_params"]["case_type"] == "openfoamCompressorCascadeRas":
-        res = [f"results/simulations/{instance_pattern}/constant/polyMesh"  for instance_pattern in paramspace.instance_patterns]
 
-    elif config["case_params"]["case_type"] == "trace4avRas":
-        res = [f"results/simulations/{instance_pattern}/input/TRACE.cgns" for instance_pattern in paramspace.instance_patterns]
-    else:
-        assert True, "this warning should be handled by snakemake, not assert"
+# def get_defined_sim():
+#     if config["case_params"]["case_type"] == "openfoamCompressorCascadeRas":
+#         res = [f"results/simulations/{instance_pattern}/constant/polyMesh"  for instance_pattern in paramspace.instance_patterns]
+#
+#     elif config["case_params"]["case_type"] == "trace4avRas":
+#         res = [f"results/simulations/{instance_pattern}/input/TRACE.cgns" for instance_pattern in paramspace.instance_patterns]
+#     else:
+#         assert True, "this warning should be handled by snakemake, not assert"
 
-    return res
+    # return res
+def get_simdir(path):
+    #import pdb
+    #pdb.set_trace()
+    simdir = []
+    for r, d, f in os.walk(path):
+        for dir in d:
+            if dir == "pitch~0.0765":
+                simdir.append(os.path.join(r, dir))
 
-def get_results():
-    if config["case_params"]["case_type"]=="openfoamCompressorCascadeRas":
-        res = [directory(f"results/simulations/{instance_pattern}/{proc}/{options['endtime']}")
-                                 for proc in [f"processor{id}" for instance_pattern in paramspace.instance_patterns
-                                              for id in range(options["processors"])]]
+    return simdir
 
-    elif config["case_params"]["case_type"]=="trace4avRas":
-        res = [f"results/simulations/{instance_pattern}/output/cgns/TRACE.cgns" for instance_pattern in paramspace.instance_patterns]
-    else:
-        assert True, "this warning should be handled by snakemake, not assert"
-    return res
+
+
+# def get_results():
+#     if config["case_params"]["case_type"]=="openfoamCompressorCascadeRas":
+#         res = [(f"results/simulations/{instance_pattern}/{proc}/{options['endtime']}" for instance_pattern in paramspace.instance_patterns)
+#                for proc in [f"processor{id}" for id in range(options["processors"])]]
+#
+#     elif config["case_params"]["case_type"]=="trace4avRas":
+#         res = [f"results/simulations/{instance_pattern}/output/cgns/TRACE.cgns" for instance_pattern in paramspace.instance_patterns]
+#     else:
+#         assert True, "this warning should be handled by snakemake, not assert"
+#     return res
+
+execut_output = ["p","T","U","rho"]
+
+def execute():
+    return [f"results/simulations/{instance_pattern}/{proc}/{options['endtime']}/{f}"
+                                            for instance_pattern in paramspace.instance_patterns
+                                            for proc in [f"processor{id}"  for id in range(config["processors"])] for f in execut_output]
+
 
 """
 include all refactored rules
@@ -87,8 +106,8 @@ include: "rules/execute.smk"
 
 
 """
-When working in a cluster environment, not all rules need to become a job that has to be submitted 
-(e.g. downloading some file, or a target-rule like all, see Targets and aggregation). 
+When working in a cluster environment, not all rules need to become a job that has to be submitted
+(e.g. downloading some file, or a target-rule like all, see Targets and aggregation).
 The keyword localrules allows to mark a rule as local,
 so that it is not submitted to the cluster and instead executed on the host node
 
@@ -99,6 +118,9 @@ localrules: all
 
 rule all:
     input :
-        #*get_casefiles(),
+        execute()
+        #get_prep(),
+        #get_simdir("results/simulations")
+        #get_casefiles()
         #get_defined_sim(),
-        get_results(),
+        #get_results(),

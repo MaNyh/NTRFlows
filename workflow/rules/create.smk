@@ -25,7 +25,7 @@ rule create_case:
     output:
         casefiles=[f"results/simulations/{paramspace.wildcard_pattern}/{file}" for file in template.files]
     container:
-        "workflow/container/ntrfc.sif"
+        "library://nyhuma/ntrflows/ntr.sif:latest"
     shell:
         """
         python workflow/scripts/ntrfc_createcase.py --input {input.templatefiles} --output {output.casefiles} --simparams {input.param_config} --options {input.option_config}

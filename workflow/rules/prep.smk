@@ -1,23 +1,43 @@
+# def get_simdir(path):
+#     simdir = []
+#     for r, d, f in os.walk(path):
+#         for dir in d:
+#             if dir == "pitch~0.0765":
+#                 simdir.append(os.path.join(r, dir))
+#
+#     return simdir
+
+def get_filelist_fromdir(path):
+    filelist = []
+    for r, d, f in os.walk(path):
+        for file in f:
+            filelist.append(os.path.join(r, file))
+
+    return filelist
+
 rule prep:
     input:
-        casefiles=[f"results/simulations/{paramspace.wildcard_pattern}/{file}" for file in template.files],
+        casefiles= get_filelist_fromdir("results/simulations"),
         mesh=config["case_params"]["mesh"]
     output:
-        # todo: the following line is excluded because of ambigiuty between prep and execute. the paramspace-.wildcard_pattern
-        # is reading /output/cgns/TRACE.cgns as a pattern --> ambigious
-        # but temporary()
-        #mesh = temporary(f"results/simulations/{paramspace.wildcard_pattern}/TRACE.cgns"),
-        preped = f"results/simulations/{paramspace.wildcard_pattern}/input/TRACE.cgns"
+        mesh = temporary(f"results/simulations/{paramspace.wildcard_pattern}/mesh.msh"),
+        preped = [directory(f"results/simulations/{paramspace.wildcard_pattern}/processor{num}/constant" for num in range(config["processors"]))]
     params:
         casedirs = f"results/simulations/{paramspace.wildcard_pattern}",
         environment = options["env"],
         prepcommands = options["prep"]
+    container:
+            "docker://openfoamplus/of_v2006_centos73"
+    log: f"logs/{paramspace.wildcard_pattern}/prep.log"
     threads: 1
     shell:
         """
-        set +u
+        (
         {params.environment}
-        cp {input.mesh} {params.casedirs}/.
+        cp {input.mesh} {params.casedirs}/mesh.msh
         cd {params.casedirs}
-        {params.prepcommands}
+        {params.prepcommands}) >> {log};
         """
+
+def get_prep():
+    return [directory(f"results/simulations/{instance_pattern}/{proc}/constant" for instance_pattern in paramspace.instance_patterns for proc in [f"processor{num}"  for num in range(config["processors"])])]
