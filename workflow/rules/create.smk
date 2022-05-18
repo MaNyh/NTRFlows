@@ -29,6 +29,7 @@ rule create_case:
         casefiles=[f"results/simulations/{paramspace.wildcard_pattern}/{file}" for file in template.files]
     log: f"logs/{paramspace.wildcard_pattern}/create_case.log"
     container: "library://nyhuma/ntrflows/ntr.sif:latest"
+
     threads: 1
     shell:
         """
