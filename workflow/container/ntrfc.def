@@ -1,40 +1,54 @@
 Bootstrap: docker
-
-From: nvidia/cuda:10.2-devel-ubuntu20.04
+From: ubuntu:20.04
 
 %post
 
-export DEBIAN_FRONTEND=noninteractive
+  CURDIR=$(pwd)
 
-CURDIR=`pwd`
+  # Set timezone to Etc/UTC for tzdata. See issue #4365 for more details.
+  TZ=Etc/UTC && \
+    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
+    echo $TZ > /etc/timezone
 
-apt-get update
-apt-get install -y tmux nano git wget
+  apt-get update -y
+  apt-get install -y tmux nano git wget
+  apt-get install -y --no-install-recommends \
+    build-essential \
+    gfortran \
+    libssl-dev \
+    zlib1g-dev \
+    libbz2-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    wget \
+    curl \
+    llvm \
+    libncurses5-dev \
+    xz-utils \
+    tk-dev \
+    libxml2-dev \
+    libxmlsec1-dev \
+    libffi-dev \
+    liblzma-dev \
+    liblapack-dev \
+    libopenblas-dev \
+    libhdf5-dev \
+    libgl1-mesa-glx xvfb \
+    gcc
 
-apt-get install -y --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
-
-apt update && apt install python-qt4 libgl1-mesa-glx -y
-
-apt-get install xvfb -y
-export DISPLAY=:99.0
-export PYVISTA_OFF_SCREEN=true
-export PYVISTA_USE_IPYVTK=true
-Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-
-export PYENV_ROOT=/opt/pyenv
-export PATH="/opt/pyenv/bin:$PATH"
-curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
-pyenv install 3.9.10
-echo 'export PATH=/opt/pyenv/versions/3.9.10/bin/:$PATH' >> $SINGULARITY_ENVIRONMENT
-export PATH=/opt/pyenv/versions/3.9.10/bin/:$PATH
-
-pip install --editable git+https://github.com/MaNyh/NTRfC.git#egg=NTRfC
+  #apt update && apt install python-qt4 libgl1-mesa-glx -y
 
 
+  export PYENV_ROOT=/opt/pyenv
+  export PATH="/opt/pyenv/bin:$PATH"
+  curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+  pyenv install 3.9.10
+  echo 'export PATH=/opt/pyenv/versions/3.9.10/bin/:$PATH' >> $SINGULARITY_ENVIRONMENT
+  export PATH=/opt/pyenv/versions/3.9.10/bin/:$PATH
 
-#cd $CURDIR
-#rm -rf $SINGULARITY_ROOTFS/tmp/sing_build_cuda
+  pip install --editable git+https://github.com/MaNyh/NTRfC.git#egg=NTRfC
 
-unset DEBIAN_FRONTEND
+  export LIBGL_ALWAYS_INDIRECT=0
 
-ldconfig
+  # clean the build
+  apt-get clean

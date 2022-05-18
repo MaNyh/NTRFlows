@@ -17,6 +17,8 @@ rule prep:
     shell:
         """
         (
+        # todo: why do we use a subshell here?
+        # 
         {params.environment}
         cp {input.mesh} {params.casedirs}/mesh.msh
         cd {params.casedirs}

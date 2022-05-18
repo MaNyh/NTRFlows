@@ -1,4 +1,3 @@
-
 rule execute:
     input:
         decomposed = [f"results/simulations/{paramspace.wildcard_pattern}/processor{pid}/constant" for pid in range(config["processors"])]
@@ -15,10 +14,6 @@ rule execute:
     params:
         casedirs = f"results/simulations/{paramspace.wildcard_pattern}/",
         environment = config["env"],
-        processors = config["processors"]
-    resources:
-        attempt=3,
-        mem_mb=32000
     container:
         "docker://openfoamplus/of_v2006_centos73"
     log: f"logs/{paramspace.wildcard_pattern}/execute.log"
@@ -28,6 +23,6 @@ rule execute:
         (
         cd {params.casedirs}
         {params.environment}
-        mpirun --oversubscribe -np {threads} rhoPimpleFoam -parallel
-        ) >> {log}
+        mpirun --oversubscribe -n {threads} rhoPimpleFoam -parallel 
+        ) 2> {log}
         """

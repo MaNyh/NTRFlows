@@ -7,6 +7,11 @@ rule prep_config_create_case:
         simconfig = config,
     threads: 1
     run:
+        """
+        this rule must use "run" as python-dictionaries have to be converted to json.
+        it is not straight forward to call a python script with dicts as arguments.
+        therefor the conversion into json usin "run"
+        """
         import numpy as np
         import json
         def np_encoder(object):
