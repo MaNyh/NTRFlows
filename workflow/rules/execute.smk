@@ -12,8 +12,7 @@ def get_filelist_fromdir(paths):
 
 rule execute:
     input:
-         polymeshfiles= get_filelist_fromdir([f"results/simulations/{paramspace.wildcard_pattern}/processor{pid}/constant/polymesh" for pid in range(config["processors"])]),
-         setsfiles= get_filelist_fromdir([f"results/simulations/{paramspace.wildcard_pattern}/processor{pid}/constant/polymesh/sets" for pid in range(config["processors"])])
+        points = expand("results/simulations/{instance}/processor{num}/constant/polyMesh/points",instance=[inst for inst in paramspace.instance_patterns],num=range(config["processors"]))
     output:
         pressure = protected([f"results/simulations/{paramspace.wildcard_pattern}/{proc}/{options['endtime']}/p"
                                             for proc in [f"processor{id}"  for id in range(config["processors"])]]),
