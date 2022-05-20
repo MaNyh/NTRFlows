@@ -44,51 +44,23 @@ options = load_configfile("config/case_options.yaml")
 validate(options,template.option_schema)
 
 
+##############Create Case files##########################################
 def get_casefiles():
-    """
-    this method probably (!) can't be used with create_case.smk, as there the wildcards have to be defined from the
-    template-files
-    :return:
-    """
-    files = [f"results/simulations/{instance_pattern}/{file}" for instance_pattern in paramspace.instance_patterns for file
+    return [f"results/simulations/{instance_pattern}/{file}" for instance_pattern in paramspace.instance_patterns for file
       in template.files]
-    return files
+
+############Preprocessing Commands results############################
+
+## Warning because of using "directory function" in rule all als input
+def get_prep():
+    return [directory(f"results/simulations/{instance_pattern}/{proc}/constant" for instance_pattern in paramspace.instance_patterns for proc in [f"processor{num}"  for num in range(config["processors"])])]
 
 
-# def get_defined_sim():
-#     if config["case_params"]["case_type"] == "openfoamCompressorCascadeRas":
-#         res = [f"results/simulations/{instance_pattern}/constant/polyMesh"  for instance_pattern in paramspace.instance_patterns]
-#
-#     elif config["case_params"]["case_type"] == "trace4avRas":
-#         res = [f"results/simulations/{instance_pattern}/input/TRACE.cgns" for instance_pattern in paramspace.instance_patterns]
-#     else:
-#         assert True, "this warning should be handled by snakemake, not assert"
+#############Execution results#########################################
 
-    # return res
-def get_simdir(path):
-    #import pdb
-    #pdb.set_trace()
-    simdir = []
-    for r, d, f in os.walk(path):
-        for dir in d:
-            if dir == "pitch~0.0765":
-                simdir.append(os.path.join(r, dir))
-
-    return simdir
-
-
-
-# def get_results():
-#     if config["case_params"]["case_type"]=="openfoamCompressorCascadeRas":
-#         res = [(f"results/simulations/{instance_pattern}/{proc}/{options['endtime']}" for instance_pattern in paramspace.instance_patterns)
-#                for proc in [f"processor{id}" for id in range(options["processors"])]]
-#
-#     elif config["case_params"]["case_type"]=="trace4avRas":
-#         res = [f"results/simulations/{instance_pattern}/output/cgns/TRACE.cgns" for instance_pattern in paramspace.instance_patterns]
-#     else:
-#         assert True, "this warning should be handled by snakemake, not assert"
-#     return res
-
+## Error ChildIOException
+# Stackoverflow: error come from that rule prep has a directories als output and rule create_case has files als output
+# But Johannes said that this problem had been solved.
 execut_output = ["p","T","U","rho"]
 
 def execute():
@@ -96,6 +68,7 @@ def execute():
                                             for instance_pattern in paramspace.instance_patterns
                                             for proc in [f"processor{id}"  for id in range(config["processors"])] for f in execut_output]
 
+#################################################################
 
 """
 include all refactored rules
@@ -114,13 +87,11 @@ so that it is not submitted to the cluster and instead executed on the host node
 https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#resources
 """
 
-localrules: all
+localrules: all, create_case, prep
 
 rule all:
     input :
-        execute()
-        #get_prep(),
-        #get_simdir("results/simulations")
         #get_casefiles()
-        #get_defined_sim(),
-        #get_results(),
+        #get_prep()
+        execute()
+

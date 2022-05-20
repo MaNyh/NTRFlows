@@ -1,6 +1,19 @@
+import os
+def get_filelist_fromdir(paths):
+    #import pdb
+    #pdb.set_trace()
+    filelist = []
+    for path in paths:
+        for r, d, f in os.walk(path):
+            for file in f:
+                filelist.append(os.path.join(r, file))
+
+    return filelist
+
 rule execute:
     input:
-         [f"results/simulations/{paramspace.wildcard_pattern}/processor{pid}/constant" for pid in range(config["processors"])]
+         polymeshfiles= get_filelist_fromdir([f"results/simulations/{paramspace.wildcard_pattern}/processor{pid}/constant/polymesh" for pid in range(config["processors"])]),
+         setsfiles= get_filelist_fromdir([f"results/simulations/{paramspace.wildcard_pattern}/processor{pid}/constant/polymesh/sets" for pid in range(config["processors"])])
     output:
         pressure = protected([f"results/simulations/{paramspace.wildcard_pattern}/{proc}/{options['endtime']}/p"
                                             for proc in [f"processor{id}"  for id in range(config["processors"])]]),
@@ -28,7 +41,7 @@ rule execute:
         (
         cd {params.casedirs}
         {params.environment}
-        mpirun --oversubscribe -np {threads} rhoPimpleFoam -parallel
+        mpirun --oversubscribe -np {threads} rhoPimpleFoam 
         ) >> {log}
         """
 

@@ -1,12 +1,3 @@
-# def get_simdir(path):
-#     simdir = []
-#     for r, d, f in os.walk(path):
-#         for dir in d:
-#             if dir == "pitch~0.0765":
-#                 simdir.append(os.path.join(r, dir))
-#
-#     return simdir
-
 def get_filelist_fromdir(path):
     filelist = []
     for r, d, f in os.walk(path):
@@ -39,5 +30,8 @@ rule prep:
         {params.prepcommands}) >> {log};
         """
 
-def get_prep():
-    return [directory(f"results/simulations/{instance_pattern}/{proc}/constant" for instance_pattern in paramspace.instance_patterns for proc in [f"processor{num}"  for num in range(config["processors"])])]
+
+
+
+# def get_prep():
+#     return [directory(f"results/simulations/{instance_pattern}/{proc}/constant" for instance_pattern in paramspace.instance_patterns for proc in [f"processor{num}"  for num in range(config["processors"])])]
