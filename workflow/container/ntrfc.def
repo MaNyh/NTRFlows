@@ -36,6 +36,8 @@ From: ubuntu:20.04
     libgl1-mesa-glx xvfb \
     gcc
 
+  #apt update && apt install python-qt4 libgl1-mesa-glx -y
+
 
   export PYENV_ROOT=/opt/pyenv
   export PATH="/opt/pyenv/bin:$PATH"
@@ -46,4 +48,7 @@ From: ubuntu:20.04
 
   pip install --editable git+https://github.com/MaNyh/NTRfC.git#egg=NTRfC
 
+  export LIBGL_ALWAYS_INDIRECT=0
 
+  # clean the build
+  apt-get clean
