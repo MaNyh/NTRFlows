@@ -17,12 +17,12 @@ rule execute:
     container:
         "docker://openfoamplus/of_v2006_centos73"
     log: f"logs/{paramspace.wildcard_pattern}/execute.log"
-    threads: 10
+    threads: config["processors"]
     shell:
         """
         (
         cd {params.casedirs}
         {params.environment}
-        mpirun --oversubscribe -n 10 rhoPimpleFoam -parallel 
+        mpirun --oversubscribe -n {threads} rhoPimpleFoam -parallel 
         ) 2> {log}
         """
