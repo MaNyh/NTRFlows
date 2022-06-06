@@ -10,7 +10,6 @@ rule execute:
                                             for proc in [f"processor{id}"  for id in range(config["processors"])]]),
         results_densityfield = protected([f"results/simulations/{paramspace.wildcard_pattern}/{proc}/{config['endtime']}/rho"
                                             for proc in [f"processor{id}"  for id in range(config["processors"])]]),
-        log= protected(f"results/simulations/{paramspace.wildcard_pattern}/log")
     params:
         casedirs = f"results/simulations/{paramspace.wildcard_pattern}/",
         environment = config["env"],
