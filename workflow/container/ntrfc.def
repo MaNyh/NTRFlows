@@ -1,6 +1,10 @@
 Bootstrap: docker
 From: ubuntu:20.04
 
+%environment
+  export LIBGL_ALWAYS_INDIRECT=0
+
+
 %post
 
   CURDIR=$(pwd)
@@ -48,7 +52,6 @@ From: ubuntu:20.04
 
   pip install --editable git+https://github.com/MaNyh/NTRfC.git#egg=NTRfC
 
-  export LIBGL_ALWAYS_INDIRECT=0
 
   # clean the build
   apt-get clean

@@ -37,10 +37,10 @@ rule find_results:
 
 rule bladeloading:
     input: f"results/simulations/{paramspace.wildcard_pattern}/res/BLADE.vtp"
-    output: f"results/simulations/{paramspace.wildcard_pattern}/bladeloading.csv"
-
+    output: f"results/simulations/{paramspace.wildcard_pattern}/bladeloading.jpg"
+    log: f"logs/{paramspace.wildcard_pattern}/bladeloading.log"
     container: "library://nyhuma/ntrflows/ntr.sif:latest"
     shell:
         """
-        python workflow/scripts/ntr_bladeloading.py --input {input} --output {output}
+        python workflow/scripts/ntr_bladeloading.py --input {input} --output {output} > {log}
         """

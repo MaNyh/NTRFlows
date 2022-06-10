@@ -1,7 +1,7 @@
 mesh: "resources/mesh/fluent.msh"
 env: "set +euo pipefail;. /opt/OpenFOAM/setImage_v2006.sh ;set -euo pipefail;"
-processors: 10
+processors: 16
 deltat: 0.00000005
 courantnumber: 1
-endtime: 0.001
-writeinterval: 0.0001
+endtime: 0.005
+writeinterval: 0.001
