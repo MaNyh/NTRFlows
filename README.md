@@ -26,9 +26,9 @@ This issue is documented in https://github.com/MaNyh/NTRFlows/issues/1
 It is crucial to solve this issue as soon as possible
 
 ```console
-foo@bar:/path/to/project-workdir$ git clone -b master https://github.com/MaNyh/NTRFlows.git 
-foo@bar:/path/to/project-workdir$ cd NTRFlows
-foo@bar:/path/to/project-workdir$ snakemake -j 1 -c16 --use-singularity --profile profiles/slurm
+foo@bar:/path/to/somedirectory$ git clone -b master https://github.com/MaNyh/NTRFlows.git 
+foo@bar:/path/to/somedirectory$ cd NTRFlows
+foo@bar:/path/to/somedirectory/NTRFlows$ snakemake -j 1 -c16 --use-singularity --profile profiles/slurm
 ```
 
 There will be another deployment-option that is described in the Snakemake Workflow Catalog (see Documentation below)
