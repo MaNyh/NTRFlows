@@ -1,12 +1,16 @@
-rule prepost:
+rule create_vtk:
     input:
         rules.execute.output
     output:
-        directory(f"results/simulations/{paramspace.wildcard_pattern}/VTK")
+        vtkdir=directory(f"results/simulations/{paramspace.wildcard_pattern}/vtk/"),
+        blade=f"results/simulations/{paramspace.wildcard_pattern}/vtk/BLADE.vtp",
+        inlet=f"results/simulations/{paramspace.wildcard_pattern}/vtk/INLET.vtp",
+        outlet=f"results/simulations/{paramspace.wildcard_pattern}/vtk/OUTLET.vtp",
+        volume=f"results/simulations/{paramspace.wildcard_pattern}/vtk/internal.vtu",
     params:
         environment = config["env"],
         casedirs = f"results/simulations/{paramspace.wildcard_pattern}",
-
+        casename = paramspace.wildcard_pattern
     threads: 1
     container:
         "docker://openfoamplus/of_v2006_centos73"
@@ -16,27 +20,19 @@ rule prepost:
         {params.environment}
         cd {params.casedirs}
         reconstructPar -latestTime
-        foamToVTK -latestTime
+        foamToVTK -latestTime 
+        VTKDIR=$(find VTK/* -maxdepth 0 -type d)
+        mv $VTKDIR/boundary/BLADE.vtp vtk/.
+        mv $VTKDIR/boundary/INLET.vtp vtk/.
+        mv $VTKDIR/boundary/OUTLET.vtp vtk/.
+        mv $VTKDIR/internal.vtu vtk/.
+        rm -r VTK
         """
 
-rule find_results:
-    input:
-        f"results/simulations/{paramspace.wildcard_pattern}/VTK"
-    output:
-        blade=f"results/simulations/{paramspace.wildcard_pattern}/res/BLADE.vtp",
-        inlet=f"results/simulations/{paramspace.wildcard_pattern}/res/INLET.vtp",
-        outlet=f"results/simulations/{paramspace.wildcard_pattern}/res/OUTLET.vtp",
-        volume=f"results/simulations/{paramspace.wildcard_pattern}/res/internal.vtu",
-    shell:
-        """
-        cp {input}/*/boundary/BLADE.vtp {output.blade}
-        cp {input}/*/boundary/INLET.vtp {output.inlet}
-        cp {input}/*/boundary/OUTLET.vtp {output.outlet}
-        cp {input}/*/internal.vtu {output.volume}
-        """
+
 
 rule bladeloading:
-    input: f"results/simulations/{paramspace.wildcard_pattern}/res/BLADE.vtp"
+    input: f"results/simulations/{paramspace.wildcard_pattern}/vtk/BLADE.vtp"
     output: f"results/simulations/{paramspace.wildcard_pattern}/bladeloading.jpg"
     log: f"logs/{paramspace.wildcard_pattern}/bladeloading.log"
     container: "library://nyhuma/ntrflows/ntr.sif:latest"

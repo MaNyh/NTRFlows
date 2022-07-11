@@ -19,7 +19,7 @@ latency-wait: 60
 #   - execute=10
 #   - multi_core_rule=10
 # # set-resources: map rule names to resources in general
-set-resources:
-   - execute:mem_mb=12000
+#set-resources:
+#   - execute:mem_mb=12000
 #   - execute:nodes=2
 #   - long_running_rule:runtime=1200

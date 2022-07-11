@@ -15,6 +15,7 @@ Currently, the workflow is deployed via git. Simply clone the repo and start the
 
 The only dependencies needed are "snakemake, pandas, singularity/conda and slurm"
 
+Currently the usage of the workflow is limited to
 ```console
 foo@bar:/path/to/project-workdir$ git clone -b master https://github.com/MaNyh/NTRFlows.git 
 foo@bar:/path/to/project-workdir$ snakemake -j 1 --use-singularity --profile profiles/slurm

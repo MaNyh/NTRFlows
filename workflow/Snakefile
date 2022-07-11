@@ -1,6 +1,5 @@
 from snakemake.utils import validate
 from snakemake.utils import Paramspace
-from snakemake import load_configfile
 import pandas as pd
 import os
 
@@ -86,7 +85,7 @@ so that it is not submitted to the cluster and instead executed on the host node
 https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#resources
 """
 
-localrules: all, prep_config_create_case, create_case, prep, prepost, find_results, bladeloading
+localrules: all, prep_config_create_case, create_case, prep, create_vtk, bladeloading
 
 rule all:
     input :
