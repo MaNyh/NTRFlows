@@ -1,4 +1,4 @@
-rule prep_config_create_case:
+rule write_caseconfig:
     output:
         paramfile = f"results/simulations/{paramspace.wildcard_pattern}/paramdict.json",
         configfile = f"results/simulations/{paramspace.wildcard_pattern}/configdict.json"
@@ -12,11 +12,7 @@ rule prep_config_create_case:
         it is not straight forward to call a python script with dicts as arguments.
         therefor the conversion into json usin "run"
         """
-        import numpy as np
         import json
-        def np_encoder(object):
-            if isinstance(object,np.generic):
-                return object.item()
 
         with open(output.paramfile, "w") as fobj:
             fobj.write(json.dumps(params.simparams,indent=4, default=np_encoder))
