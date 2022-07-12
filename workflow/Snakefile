@@ -1,45 +1,15 @@
 from snakemake.utils import validate
-from snakemake.utils import Paramspace
-import pandas as pd
-import os
-
 
 configfile : "config/workflowsettings.yaml"
 validate(config,"schemas/config.schema.yaml")
 
 
-def get_filelist_fromdir(path):
-    #import pdb
-    #pdb.set_trace()
-
-    filelist = []
-    for r, d, f in os.walk(path):
-        for file in f:
-            filelist.append(os.path.join(r, file))
-
-    return filelist
-
-class case_template:
-
-    def __init__(self, name):
-        self.name = name
-        self.path = f"resources/templates/{name}"
-        self.param_schema = f"schemas/param.schema.yaml"
-        self.files = [os.path.relpath(fpath, self.path) for fpath in get_filelist_fromdir(self.path)]
-
-
-
-template = case_template("openfoamCompressorCascadeRas")
-
-params = pd.read_csv("config/case_params.tsv",sep="\t")
-validate(params, template.param_schema)
-paramspace = Paramspace(params)
-paramspace.param_sep="~"
-paramspace.pattern="{}_{}_{}"
-
 """
-include all refactored rules
+include all rules
+
+common-rules is including 
 """
+
 include: "rules/common.smk"
 include: "rules/create.smk"
 include: "rules/prep.smk"
@@ -56,7 +26,7 @@ so that it is not submitted to the cluster and instead executed on the host node
 https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#resources
 """
 
-localrules: all, prep_config_create_case, create_case, prep, create_vtk, bladeloading
+localrules: all, write_caseconfig, create_case, prep, create_vtk, bladeloading
 
 rule all:
     input :

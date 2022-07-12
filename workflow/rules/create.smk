@@ -1,4 +1,4 @@
-rule prep_config_create_case:
+rule write_caseconfig:
     output:
         paramfile = f"results/simulations/{paramspace.wildcard_pattern}/paramdict.json",
         configfile = f"results/simulations/{paramspace.wildcard_pattern}/configdict.json"

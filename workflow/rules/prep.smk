@@ -3,7 +3,6 @@ rule prep:
         casefiles=[f"results/simulations/{paramspace.wildcard_pattern}/{file}" for file in template.files],
         mesh=config["mesh"]
     output:
-        # but temporary()
         mesh = temporary(f"results/simulations/{paramspace.wildcard_pattern}/mesh.msh"),
         preped = [directory(f"results/simulations/{paramspace.wildcard_pattern}/processor{pid}/constant") for pid in range(config["processors"])]
     params:
@@ -13,12 +12,9 @@ rule prep:
     threads: 1
     container:
         "docker://openfoamplus/of_v2006_centos73"
-
     shell:
         """
         (
-        # todo: why do we use a subshell here?
-        # 
         {params.environment}
         cp {input.mesh} {params.casedirs}/mesh.msh
         cd {params.casedirs}
