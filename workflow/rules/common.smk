@@ -62,8 +62,6 @@ class case_template:
     def __init__(self, ):
         self.path = "resources/templates/openfoamCompressorCascadeRas"
         self.files = [os.path.relpath(fpath, self.path) for fpath in get_filelist_fromdir(self.path)]
-        print(self.files)
-        print(self.path)
 
 def np_encoder(object):
     """

@@ -14,9 +14,10 @@ rule create_vtk:
     threads: 1
     container:
         "docker://openfoamplus/of_v2006_centos73"
-
+    log: f"logs/{paramspace.wildcard_pattern}/create_vtk.log"
     shell:
         """
+        (
         {params.environment}
         cd {params.casedirs}
         reconstructPar -latestTime
@@ -27,6 +28,7 @@ rule create_vtk:
         mv $VTKDIR/boundary/OUTLET.vtp vtk/.
         mv $VTKDIR/internal.vtu vtk/.
         rm -r VTK
+        ) 2> {log}
         """
 
 
