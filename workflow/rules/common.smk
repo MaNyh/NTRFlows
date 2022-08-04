@@ -1,3 +1,5 @@
+import pdb
+
 from snakemake.utils import Paramspace
 import pandas as pd
 import os
@@ -73,7 +75,9 @@ def np_encoder(object):
         return object.item()
 
 template = case_template()
-params = pd.read_csv("config/case_params.tsv",sep="\t")
+caseconfig = pd.read_csv("config/case_params.tsv",sep="\t")
+params = caseconfig.drop(columns=["dependency"])
+dependencies = caseconfig["dependency"]
 validate(params, "../schemas/param.schema.yaml")
 paramspace = Paramspace(params)
 paramspace.param_sep="~"

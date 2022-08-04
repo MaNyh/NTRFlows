@@ -1,4 +1,7 @@
-velocity_inlet_u	velocity_inlet_v	pressure_outlet
-30	40	100000
+velocity_inlet_u	velocity_inlet_v	pressure_outlet	dependency
+30	40	100000	-1
+30	40	110000	1
+30	40	90000	1
+40	40	90000	2
 
 
