@@ -7,15 +7,14 @@ rule prep:
         preped = [directory(f"results/simulations/{paramspace.wildcard_pattern}/processor{pid}/constant") for pid in range(config["processors"])]
     params:
         casedirs = f"results/simulations/{paramspace.wildcard_pattern}",
-        environment = config["env"],
     log: f"logs/{paramspace.wildcard_pattern}/prep.log"
     threads: 1
     container:
         "docker://openfoamplus/of_v2006_centos73"
     shell:
         """
-        (
-        {params.environment}
+        (         
+        set +euo pipefail;. /opt/OpenFOAM/setImage_v2006.sh ;set -euo pipefail;
         cp {input.mesh} {params.casedirs}/mesh.msh
         cd {params.casedirs}
         fluent3DMeshToFoam mesh.msh

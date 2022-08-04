@@ -12,16 +12,14 @@ rule execute:
                                             for proc in [f"processor{id}"  for id in range(config["processors"])]]),
     params:
         casedirs = f"results/simulations/{paramspace.wildcard_pattern}/",
-        environment = config["env"],
-    container:
-        "docker://openfoamplus/of_v2006_centos73"
+    container: "docker://openfoamplus/of_v2006_centos73"
     log: f"logs/{paramspace.wildcard_pattern}/execute.log"
     threads: config["processors"]
     shell:
         """
         (
         cd {params.casedirs}
-        {params.environment}
-        mpirun --oversubscribe -n {threads} rhoPimpleFoam -parallel 
+        set +euo pipefail;. /opt/OpenFOAM/setImage_v2006.sh ;set -euo pipefail;
+        mpirun --oversubscribe -n {threads} rhoSimpleFoam -parallel 
         ) 2> {log}
         """

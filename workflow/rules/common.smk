@@ -38,6 +38,8 @@ def get_post():
     """
     res = [f"results/simulations/{instance_pattern}/bladeloading.jpg"
                                             for instance_pattern in paramspace.instance_patterns]
+    res += [f"results/simulations/{instance_pattern}/velocity_contour.jpg"
+                                            for instance_pattern in paramspace.instance_patterns]
     return res
 
 

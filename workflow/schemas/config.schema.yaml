@@ -7,9 +7,6 @@ type: object
 properties:
   mesh:
     type: string
-  env:
-    description: environment commands for prep
-    type: string
   processors:
     description: nop
     type: number
@@ -31,5 +28,4 @@ additionalProperties: false
 required:
     - courantnumber
     - mesh
-    - env
     - processors

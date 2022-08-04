@@ -7,6 +7,12 @@ NumericalTestRigFlows (NTRFlows)
 
 A Snakemake workflow for `parameterstudies in cfd-simulations`
 
+## Installation of snakemake
+
+Have a look at the snakemake-documentation. Th
+
+https://snakemake.readthedocs.io/en/stable/
+
 ## Deployment and Usage
 
 Be aware, that this repository is still in early development. There are tons of issues left and the workflow will change quite a bit until it is productive.

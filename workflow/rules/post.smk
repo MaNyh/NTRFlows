@@ -8,7 +8,6 @@ rule create_vtk:
         outlet=f"results/simulations/{paramspace.wildcard_pattern}/vtk/OUTLET.vtp",
         volume=f"results/simulations/{paramspace.wildcard_pattern}/vtk/internal.vtu",
     params:
-        environment = config["env"],
         casedirs = f"results/simulations/{paramspace.wildcard_pattern}",
         casename = paramspace.wildcard_pattern
     threads: 1
@@ -18,7 +17,7 @@ rule create_vtk:
     shell:
         """
         (
-        {params.environment}
+        set +euo pipefail;. /opt/OpenFOAM/setImage_v2006.sh ;set -euo pipefail; 
         cd {params.casedirs}
         reconstructPar -latestTime
         foamToVTK -latestTime 
@@ -41,4 +40,14 @@ rule bladeloading:
     shell:
         """
         python workflow/scripts/ntr_bladeloading.py --input {input} --output {output} > {log}
+        """
+
+rule contours:
+    input: f"results/simulations/{paramspace.wildcard_pattern}/vtk/internal.vtu"
+    output: f"results/simulations/{paramspace.wildcard_pattern}/velocity_contour.jpg"
+    log: f"logs/{paramspace.wildcard_pattern}/contours.log"
+    container: "library://nyhuma/ntrflows/ntr.sif:latest"
+    shell:
+        """
+        python workflow/scripts/ntr_contours.py --input {input} --output {output} > {log}
         """
