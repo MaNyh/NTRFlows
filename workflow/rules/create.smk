@@ -1,7 +1,8 @@
 rule write_caseconfig:
     output:
         paramfile = f"results/simulations/{paramspace.wildcard_pattern}/paramdict.json",
-        configfile = f"results/simulations/{paramspace.wildcard_pattern}/configdict.json"
+        configfile = f"results/simulations/{paramspace.wildcard_pattern}/configdict.json",
+        dependency = f"results/simulations/{paramspace.wildcard_pattern}/dependency_{paramspace.instance['dependency']}',
     params:
         simparams = paramspace.instance,
         simconfig = config,
@@ -14,14 +15,6 @@ rule write_caseconfig:
         therefor the conversion into json usin "run"
         """
         import json
-        import logging
-
-        logger = logging.getLogger(f"{log}")
-        fh = logging.FileHandler(str(log))
-        fh.setLevel(logging.INFO)
-        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-        fh.setFormatter(formatter)
-        logger.addHandler(fh)
 
         logger.info(f"writing params to {log}")
         with open(output.paramfile, "w") as fobj:
@@ -30,6 +23,9 @@ rule write_caseconfig:
         logger.info(f"writing config to {log}")
         with open(output.configfile, "w") as fobj:
             fobj.write(json.dumps(params.simconfig,indent=4, default=np_encoder))
+
+        with open(output.dependency,"w") as fobj:
+            fobj.write(" ")
 
 
 rule create_case:
