@@ -75,10 +75,15 @@ def np_encoder(object):
         return object.item()
 
 template = case_template()
-caseconfig = pd.read_csv("config/case_params.tsv",sep="\t")
-params = caseconfig.drop(columns=["dependency"])
-dependencies = caseconfig["dependency"]
+params = pd.read_csv("config/case_params.tsv",sep="\t")
 validate(params, "../schemas/param.schema.yaml")
+numparams = len(params.keys())
 paramspace = Paramspace(params)
 paramspace.param_sep="~"
-paramspace.pattern="{}_{}_{}"
+
+# the wildcardpattern is dependend on the keys defined in case_params.tv
+# the pattern needs to contain all params and therefore the length has to be adapted
+if numparams==1:
+    paramspace.pattern="{}"
+elif numparams>1:
+    paramspace.pattern="{}_"+(numparams-2)*"{}_"+"{}"

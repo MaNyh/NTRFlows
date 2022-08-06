@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import pdb
 import shutil
 
 from ntrfc.utils.filehandling.datafiles import inplace_change
@@ -29,7 +30,7 @@ def find_paramconfig(files):
     params={"param":[],
             "config":[]}
 
-    for sign in params.keys():
+    for sign in ["param","config"]:
         varsignature = r"<PLACEHOLDER [A-Z]{3,}(_{1,1}[A-Z]{3,}){,} PLACEHOLDER>".replace(r'PLACEHOLDER', sign)
         siglim = (5, -5)
 
@@ -58,7 +59,7 @@ def check_sanity(deply_sources, paramsdict, configdict):
     return parm
 
 def deploy(deply_sources,deploy_targets, paramsdict, configdict):
-    print(check_sanity)
+
     for source, target in zip(deply_sources,deploy_targets):
         os.makedirs(os.path.dirname(target), exist_ok=True)
         shutil.copyfile(source, target)

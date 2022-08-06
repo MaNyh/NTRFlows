@@ -4,7 +4,12 @@ description: case configuration file
 
 type: object
 properties:
-
+    id:
+        description: unique id of an simulation, used for dependencies
+        type: number
+    dependency:
+        description: dependency of the job. used as a startsolution
+        type: number
     pressure_outlet:
         description: used in parameterspace
         type: number
@@ -20,3 +25,7 @@ properties:
 
 
 additionalProperties: false
+
+required:
+    - id
+    - dependency
