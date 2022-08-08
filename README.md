@@ -9,7 +9,7 @@ A Snakemake workflow for `parameterstudies in cfd-simulations`
 
 ## Installation of snakemake
 
-Have a look at the snakemake-documentation. Th
+Have a look at the snakemake-documentation. There is no better installation-manual then theirs.
 
 https://snakemake.readthedocs.io/en/stable/
 
@@ -34,7 +34,7 @@ It is crucial to solve this issue as soon as possible
 ```console
 foo@bar:/path/to/somedirectory$ git clone -b master https://github.com/MaNyh/NTRFlows.git 
 foo@bar:/path/to/somedirectory$ cd NTRFlows
-foo@bar:/path/to/somedirectory/NTRFlows$ snakemake -j 1 -c16 --use-singularity --profile profiles/slurm
+foo@bar:/path/to/somedirectory/NTRFlows$ snakemake -j 16 -c4 --use-singularity --profile profiles/slurm
 ```
 
 There will be another deployment-option that is described in the Snakemake Workflow Catalog (see Documentation below)
