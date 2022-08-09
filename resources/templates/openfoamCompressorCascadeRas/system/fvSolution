@@ -75,6 +75,13 @@ solvers
         tolerance       1e-06;
         relTol          0;
     }
+    eFinal
+    {
+        solver           PBiCG;
+        preconditioner   DILU;
+        tolerance        1e-8;
+        relTol           0;
+    }
     omega
     {
         solver           PCG;
@@ -92,6 +99,13 @@ solvers
         tolerance        1e-8;
         relTol           0;
     }
+        omegaFinal
+    {
+        solver           PBiCG;
+        preconditioner   DILU;
+        tolerance        1e-8;
+        relTol           0;
+    }
     k
     {
         solver           PCG;
@@ -106,6 +120,13 @@ solvers
             agglomerator     faceAreaPair;
             mergeLevels      1;
         }
+        tolerance        1e-8;
+        relTol           0;
+    }
+    kFinal
+    {
+        solver           PBiCG;
+        preconditioner   DILU;
         tolerance        1e-8;
         relTol           0;
     }
