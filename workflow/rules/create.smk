@@ -2,7 +2,6 @@ rule write_caseconfig:
     output:
         paramfile = f"results/simulations/{paramspace.wildcard_pattern}/paramdict.json",
         configfile = f"results/simulations/{paramspace.wildcard_pattern}/configdict.json",
-        dependency = f"results/simulations/{paramspace.wildcard_pattern}/dependency_{paramspace.instance['dependency']}',
     params:
         simparams = paramspace.instance,
         simconfig = config,
@@ -24,8 +23,6 @@ rule write_caseconfig:
         with open(output.configfile, "w") as fobj:
             fobj.write(json.dumps(params.simconfig,indent=4, default=np_encoder))
 
-        with open(output.dependency,"w") as fobj:
-            fobj.write(" ")
 
 
 rule create_case:
