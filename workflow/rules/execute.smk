@@ -20,6 +20,6 @@ rule execute:
         (
         cd {params.casedirs}
         set +euo pipefail;. /opt/OpenFOAM/setImage_v2006.sh ;set -euo pipefail;
-        mpirun --oversubscribe -n {threads} rhoSimpleFoam -parallel 
+        mpirun --oversubscribe -n {threads} rhoPimpleFoam -parallel 
         ) 2> {log}
         """
