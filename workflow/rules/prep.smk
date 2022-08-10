@@ -1,6 +1,6 @@
 rule prep:
     input:
-        casefiles=[f"results/simulations/{paramspace.wildcard_pattern}/{file}" for file in template.files],
+        casefiles=rules.create_case.output.casefiles,
         mesh=config["mesh"]
     output:
         mesh = temporary(f"results/simulations/{paramspace.wildcard_pattern}/mesh.msh"),

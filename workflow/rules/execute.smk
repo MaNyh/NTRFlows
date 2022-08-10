@@ -1,6 +1,6 @@
 rule execute:
     input:
-        decomposed = [f"results/simulations/{paramspace.wildcard_pattern}/processor{pid}/constant" for pid in range(config["processors"])]
+        decomposed = rules.prep.output.preped
     output:
         results_pressurefield = protected([f"results/simulations/{paramspace.wildcard_pattern}/{proc}/{config['endtime']}/p"
                                             for proc in [f"processor{id}"  for id in range(config["processors"])]]),
