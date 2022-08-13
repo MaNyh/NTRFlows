@@ -1,7 +1,29 @@
-rule prep:
+checkpoint prep_dependencies:
+    input: rules.create_case.output.casefiles,
+    output: directory(f"results/simulations/{paramspace.wildcard_pattern}/dependency")
+    shell:
+        """
+        mkdir {output}
+        if (({wildcards.dependency} == -1))
+            then
+                touch {output}/independent
+            else
+                touch {output}/dependent
+        fi
+        """
+
+
+def check_dependency(wildcards):
+    ck_output = checkpoints.prep_dependencies.get(**wildcards).output
+    DEP, = glob_wildcards(os.path.join(ck_output,"{dependency}}"))
+    print(DEP)
+    return expand(os.path.join(ck_output,{DEPENDENCY}), DEPENDENCY=DEP)
+
+rule prep_independent:
     input:
-        casefiles=[f"results/simulations/{paramspace.wildcard_pattern}/{file}" for file in template.files],
-        mesh=config["mesh"]
+        casefiles=rules.create_case.output.casefiles,
+        mesh=config["mesh"],
+        independency=check_dependency
     output:
         mesh = temporary(f"results/simulations/{paramspace.wildcard_pattern}/mesh.msh"),
         preped = [directory(f"results/simulations/{paramspace.wildcard_pattern}/processor{pid}/constant") for pid in range(config["processors"])]
@@ -23,3 +45,4 @@ rule prep:
         decomposePar -force
         )>> {log}
         """
+

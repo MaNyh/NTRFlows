@@ -26,7 +26,7 @@ so that it is not submitted to the cluster and instead executed on the host node
 https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#resources
 """
 
-localrules: all, write_caseconfig, create_case, prep, create_vtk, bladeloading
+localrules: all, write_caseconfig, create_case, prep_independent, create_vtk, bladeloading
 
 rule all:
     input :
