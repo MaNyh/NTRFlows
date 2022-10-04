@@ -4,3 +4,5 @@ logs/**
 .snakemake
 .snakemake/**
 .idea/
+.cache/
+venv/

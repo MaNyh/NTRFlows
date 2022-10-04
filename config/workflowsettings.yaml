@@ -1,6 +1,0 @@
-mesh: "resources/mesh/fluent.msh"
-processors: 24
-deltat:  0.000000001
-courantnumber: 1
-endtime: 0.0001
-writeinterval: 0.0001
