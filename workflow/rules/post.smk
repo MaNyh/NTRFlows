@@ -1,6 +1,7 @@
+
 rule create_vtk:
     input:
-        rules.execute.output
+        rules.execute.output,
     output:
         vtkdir=directory(f"results/simulations/{paramspace.wildcard_pattern}/vtk/"),
         blade=f"results/simulations/{paramspace.wildcard_pattern}/vtk/BLADE.vtp",

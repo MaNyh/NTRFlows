@@ -25,7 +25,7 @@ BE AWARE!
 
 There are two configuration files where the number of processors have to be defined equally. 
 
-- config/workflowsettings.yaml
+- config/config.yaml
 - profiles/slurm/config.yaml
 
 This issue is documented in https://github.com/MaNyh/NTRFlows/issues/1 
@@ -38,6 +38,36 @@ foo@bar:/path/to/somedirectory/NTRFlows$ snakemake -j 16 -c4 --use-singularity -
 ```
 
 There will be another deployment-option that is described in the Snakemake Workflow Catalog (see Documentation below)
+
+## Parameter Space Exploration
+
+The parameter space exploration can be configured in  the table params.tsv
+
+In the following example _**velocity_inlet_u**_ _**velocity_inlet_v**_ and _**pressure_outlet**_ are parameters that can be set in any file in the template-directory resources/casefiles using <PARAM parametername PARAM> (or in this case e.g. <PARAM velocity_inlet_u PARAM>). 
+A table has to be identified uniquely by an "id". A dependency has to be declared. "0" means there is no dependency.
+
+| id | velocity_inlet_u | velocity_inlet_v | pressure_outlet | dependency |
+|----|------------------|------------------|-----------------|------------|
+| A1 | 30               | 40               | 100000          | 0          |
+| A2 | 30               | 40               | 100000          | 0          |
+| A3 | 30               | 40               | 100000          | 0          |
+
+This will result in a dag like this:
+
+![Alt text](images/dag_independent.svg)
+
+It is also possible to depend jobs on each other using the dependency-column.
+
+| id | velocity_inlet_u | velocity_inlet_v | pressure_outlet | dependency |
+|----|------------------|------------------|-----------------|------------|
+| A1 | 30               | 40               | 100000          | 0          |
+| A2 | 30               | 40               | 100000          | A1         |
+| A3 | 30               | 40               | 100000          | A2         |
+
+
+![Alt text](images/dag_dependent.svg)
+
+As long as ids and dependencies are well defined, you can scale the exploration as you wish 
 
 
 ## Documentation

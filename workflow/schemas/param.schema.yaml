@@ -4,7 +4,15 @@ description: case configuration file
 
 type: object
 properties:
-
+    id:
+        description: identification
+        type: string
+    dependency:
+        description: identification of the job-dependency. "0" for independent jobs
+        type: [string , number]
+    #
+    # change part below according to used PARAM pattern in the casefiles
+    #
     pressure_outlet:
         description: used in parameterspace
         type: number
@@ -17,6 +25,12 @@ properties:
         description: used in parameterspace
         type: number
         default: 30
+    #
+    #
+    ########################################################################
 
+required:
+    - id
+    - dependency
 
 additionalProperties: false

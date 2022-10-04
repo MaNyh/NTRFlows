@@ -1,14 +1,14 @@
+import pdb
 from snakemake.utils import validate
+import pandas as pd
 
-configfile : "config/workflowsettings.yaml"
+
+configfile : "config/config.yaml"
 validate(config,"schemas/config.schema.yaml")
 
+params = pd.read_csv("config/params.tsv",sep="\t")
+validate(params, "schemas/param.schema.yaml")
 
-"""
-include all rules
-
-common-rules is including 
-"""
 
 include: "rules/common.smk"
 include: "rules/create.smk"
@@ -16,21 +16,19 @@ include: "rules/prep.smk"
 include: "rules/execute.smk"
 include: "rules/post.smk"
 
-
-"""
-When working in a cluster environment, not all rules need to become a job that has to be submitted 
-(e.g. downloading some file, or a target-rule like all, see Targets and aggregation). 
-The keyword localrules allows to mark a rule as local,
-so that it is not submitted to the cluster and instead executed on the host node
-
-https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#resources
-"""
-
-localrules: all, write_caseconfig, create_case, prep, create_vtk, bladeloading
+def get_post():
+    """
+    get a list of files that have to be created by the rule post
+    """
+    res = [f"results/simulations/{instance_pattern}/bladeloading.jpg"
+                                            for instance_pattern in paramspace.instance_patterns]
+    res += [f"results/simulations/{instance_pattern}/velocity_contour.jpg"
+                                            for instance_pattern in paramspace.instance_patterns]
+    return res
 
 rule all:
-    input :
-        #get_casefiles(),
-        #get_defined_sim(),
-        #get_results(),
-        get_post()
+    input: get_post()
+
+
+
+

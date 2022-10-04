@@ -1,3 +1,13 @@
+import numpy as np
+
+def np_encoder(object):
+    """
+    encode an object to a numpy-object
+    """
+    if isinstance(object,np.generic):
+        return object.item()
+
+
 rule write_caseconfig:
     output:
         paramfile = f"results/simulations/{paramspace.wildcard_pattern}/paramdict.json",
@@ -31,7 +41,6 @@ rule write_caseconfig:
         with open(output.configfile, "w") as fobj:
             fobj.write(json.dumps(params.simconfig,indent=4, default=np_encoder))
 
-
 rule create_case:
     input:
         templatefiles=[f"{template.path}/{file}" for file in template.files],
@@ -45,4 +54,34 @@ rule create_case:
     shell:
         """
         python workflow/scripts/ntr_createcase.py --input {input.templatefiles} --output {output.casefiles} --paramfile {input.paramfile} --configfile {input.configfile} > {log}
+        """
+
+def get_indepentend_cases():
+    independents = []
+    for sim, dep in zip(SIMNAMES,DEPS):
+        if dep==0 or dep == "0":
+            independents.append(f"results/dependency/{sim}.idep")
+    return independents
+
+def get_depentend_cases():
+    dependents = []
+    for sim, dep in zip(SIMNAMES,DEPS):
+        if dep!=0 and dep!="0":
+            dependents.append(f"results/dependency/{sim}.dep")
+    return dependents
+
+rule touch_independents:
+    output: temporary(get_indepentend_cases())
+    container: "library://nyhuma/ntrflows/ntr.sif:latest"
+    shell:
+        """
+        touch {output}
+        """
+
+rule touch_dependents:
+    output: temporary(get_depentend_cases())
+    container: "library://nyhuma/ntrflows/ntr.sif:latest"
+    shell:
+        """
+        touch {output}
         """

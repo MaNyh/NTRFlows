@@ -1,47 +1,43 @@
 from snakemake.utils import Paramspace
-import pandas as pd
-import os
-import numpy as np
 
+paramspace = Paramspace(params)
+paramspace.param_sep="~"
+# the wildcardpattern is dependend on the keys defined in case_params.tv
+# the pattern needs to contain all params and therefore the length has to be adapted
+NUMPARAMS = len(paramspace.dataframe.keys())
+if NUMPARAMS==1:
+    paramspace.pattern="{}"
+elif NUMPARAMS>1:
+    paramspace.pattern="{}_" + (NUMPARAMS - 2) * "{}_" + "{}"
 
-def get_casefiles():
-    """
-    this method probably (!) can't be used with create_case.smk, as there the wildcards have to be defined from the
-    template-files
-    :return:
-    """
-    files = [f"results/simulations/{instance_pattern}/{file}" for instance_pattern in paramspace.instance_patterns for file
-      in template.files]
-    return files
+SIMS = list(paramspace["id"])
+DEPS = list(paramspace["dependency"])
+SIMNAMES = list(paramspace.instance_patterns)
 
-def get_defined_sim():
-    """
-    get a list of files that have to be created when the case is ready for execution
-    """
-    res = [directory(f"results/simulations/{instance_pattern}/{proc}/constant" for instance_pattern in paramspace.instance_patterns for proc in [f"processor{id}"  for id in range(config["processors"])])]
-    return res
+def get_dependency_case(wildcards):
+    depid = wildcards.dependency
+    simid = SIMS.index(depid)
+    dependency = SIMNAMES[simid]
+    return dependency
 
+def get_dependency_solution(wildcards):
+    dependency = get_dependency_case(wildcards)
+    resultfile =f"results/{dependency}.res"
+    return resultfile
 
-def get_results():
-    """
-    get list of results dependend on case_params.tsv and the workflowsettings.yaml
-    this list will be used to determine wildcards. wildcards are passed down the rules
-    """
-    res = [f"results/simulations/{instance_pattern}/{proc}/{config['endtime']}/p"
-                                            for instance_pattern in paramspace.instance_patterns
-                                            for proc in [f"processor{id}"  for id in range(config["processors"])]]
-    return res
+def get_dependency_touchfile(wildcards):
+    simid = wildcards.id
+    idx = SIMS.index(simid)
+    simname = SIMNAMES[idx]
+    touchfile = f"results/dependency/{simname}.dep"
+    return touchfile
 
-def get_post():
-    """
-    get a list of files that have to be created by the rule post
-    """
-    res = [f"results/simulations/{instance_pattern}/bladeloading.jpg"
-                                            for instance_pattern in paramspace.instance_patterns]
-    res += [f"results/simulations/{instance_pattern}/velocity_contour.jpg"
-                                            for instance_pattern in paramspace.instance_patterns]
-    return res
-
+def get_independency_touchfile(wildcards):
+    simid = wildcards.id
+    idx = SIMS.index(simid)
+    simname = SIMNAMES[idx]
+    touchfile = f"results/dependency/{simname}.idep"
+    return touchfile
 
 def get_filelist_fromdir(path):
     """
@@ -62,19 +58,7 @@ class case_template:
     when files is the only attribute of this object, we can redefine it to a function
     """
     def __init__(self, ):
-        self.path = "resources/templates/openfoamCompressorCascadeRas"
+        self.path = "resources/casefiles"
         self.files = [os.path.relpath(fpath, self.path) for fpath in get_filelist_fromdir(self.path)]
 
-def np_encoder(object):
-    """
-    encode an object to a numpy-object
-    """
-    if isinstance(object,np.generic):
-        return object.item()
-
 template = case_template()
-params = pd.read_csv("config/case_params.tsv",sep="\t")
-validate(params, "../schemas/param.schema.yaml")
-paramspace = Paramspace(params)
-paramspace.param_sep="~"
-paramspace.pattern="{}_{}_{}"
