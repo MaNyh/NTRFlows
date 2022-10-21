@@ -49,7 +49,6 @@ rule log_residuals:
     shell:
         """
         (
-        touch {output.done}
         cp {input} {output.logfile}
         set +euo pipefail;. /opt/OpenFOAM/setImage_v2006.sh ;set -euo pipefail; 
         cd {params.casedirs}
