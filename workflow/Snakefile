@@ -24,6 +24,8 @@ def get_post():
                                             for instance_pattern in paramspace.instance_patterns]
     res += [f"results/simulations/{instance_pattern}/velocity_contour.jpg"
                                             for instance_pattern in paramspace.instance_patterns]
+    res += [f"results/simulations/{instance_pattern}/residuals.jpg"
+                                            for instance_pattern in paramspace.instance_patterns]
     return res
 
 rule all:

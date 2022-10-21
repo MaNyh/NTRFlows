@@ -49,7 +49,7 @@ rule create_case:
     output:
         casefiles=[f"results/simulations/{paramspace.wildcard_pattern}/{file}" for file in template.files]
     log: f"logs/{paramspace.wildcard_pattern}/create_case.log"
-    container: "library://nyhuma/ntrflows/ntr.sif:latest"
+    container: "library://nyhuma/ntrflows/ntr.sif:v0.0.1"
     threads: 1
     shell:
         """
@@ -72,7 +72,6 @@ def get_depentend_cases():
 
 rule touch_independents:
     output: temporary(get_indepentend_cases())
-    container: "library://nyhuma/ntrflows/ntr.sif:latest"
     shell:
         """
         touch {output}
@@ -80,7 +79,6 @@ rule touch_independents:
 
 rule touch_dependents:
     output: temporary(get_depentend_cases())
-    container: "library://nyhuma/ntrflows/ntr.sif:latest"
     shell:
         """
         touch {output}

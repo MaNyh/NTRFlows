@@ -4,7 +4,7 @@ rule execute:
         pfile=f"results/{paramspace.wildcard_pattern}.preped",
         prepedcase = [f"results/simulations/{paramspace.wildcard_pattern}/processor{pid}/constant" for pid in range(config["processors"])]
     output:
-        resfile=f"results/{paramspace.wildcard_pattern}.res",
+        resfile=temporary(f"results/{paramspace.wildcard_pattern}.res"),
         results_pressurefield= protected([f"results/simulations/{paramspace.wildcard_pattern}/{proc}/{config['endtime']}/p"
         for proc in[f"processor{id}" for id in range(config["processors"])]]),
         results_temperaturefield= protected([f"results/simulations/{paramspace.wildcard_pattern}/{proc}/{config['endtime']}/T"
@@ -26,6 +26,6 @@ rule execute:
         cd {params.casedirs}
         set +euo pipefail;. /opt/OpenFOAM/setImage_v2006.sh ;set -euo pipefail;
         mpirun --oversubscribe -n {threads} rhoPimpleFoam -parallel 
-        ) 2> {log}
+        ) 2>&1 > {log}
         """
 

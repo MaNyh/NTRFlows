@@ -5,7 +5,7 @@ rule prep_independent:
         mesh=config["mesh"]
 
     output:
-        pfile=f"results/{paramspace.wildcard_pattern}.preped",
+        pfile=temporary(f"results/{paramspace.wildcard_pattern}.preped"),
         mesh= temporary(f"results/simulations/{paramspace.wildcard_pattern}/mesh.msh"),
         preped=[directory(f"results/simulations/{paramspace.wildcard_pattern}/processor{pid}/constant") for pid in range(config["processors"])]
     params:
@@ -25,7 +25,7 @@ rule prep_independent:
         createPatch -overwrite
         topoSet
         decomposePar -force
-        )>> {log}
+        ) 2>&1 > {log}
         """
 
 
@@ -36,7 +36,7 @@ rule prep_dependent:
         dependency=get_dependency_solution,
         mesh=config["mesh"]
     output:
-        pfile=f"results/{paramspace.wildcard_pattern}.preped",
+        pfile=temporary(f"results/{paramspace.wildcard_pattern}.preped"),
         mesh= temporary(f"results/simulations/{paramspace.wildcard_pattern}/mesh.msh"),
         preped=[directory(f"results/simulations/{paramspace.wildcard_pattern}/processor{pid}/constant") for pid in range(config["processors"])]
     params:
@@ -58,6 +58,6 @@ rule prep_dependent:
         mapFields ../{params.depdir} -consistent -sourceTime 'latestTime' -parallelSource
         topoSet
         decomposePar -force
-        )>> {log}
+        ) 2>&1 > {log}
         """
 
