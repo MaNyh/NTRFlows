@@ -15,29 +15,39 @@ https://snakemake.readthedocs.io/en/stable/
 
 ## Deployment and Usage
 
-Be aware, that this repository is still in early development. There are tons of issues left and the workflow will change quite a bit until it is productive.
-
 Currently, the workflow is deployed via git. Simply clone the repo and start the workflow using snakemake.
+
+```console
+foo@bar:/path/to/somedirectory$ git clone -b master https://github.com/MaNyh/NTRFlows.git 
+```
 
 The only dependencies needed are "snakemake, pandas, singularity/conda and slurm"
 
 BE AWARE!
 
-There are two configuration files where the number of processors have to be defined equally. 
+The rule execute is currently not using mpirun correctly.
 
-- config/config.yaml
-- profiles/slurm/config.yaml
-
-This issue is documented in https://github.com/MaNyh/NTRFlows/issues/1 
+This issue is documented in https://gitlab.uni-hannover.de/tfd_public/tools/NTRFlows/-/issues/1
 It is crucial to solve this issue as soon as possible
 
+### run
+
+Run the workflow with the following command
+
 ```console
-foo@bar:/path/to/somedirectory$ git clone -b master https://github.com/MaNyh/NTRFlows.git 
-foo@bar:/path/to/somedirectory$ cd NTRFlows
 foo@bar:/path/to/somedirectory/NTRFlows$ snakemake -j 16 -c4 --use-singularity --profile profiles/slurm
 ```
 
-There will be another deployment-option that is described in the Snakemake Workflow Catalog (see Documentation below)
+### report
+
+When a workflow finfished, you can create a report
+
+```console
+foo@bar:/path/to/somedirectory/NTRFlows$ snakemake --report
+```
+
+A report can be used for quality control of your workflow run. 
+
 
 ## Parameter Space Exploration
 

@@ -10,8 +10,8 @@ from ntrfc.utils.filehandling.datafiles import inplace_change
 parser = argparse.ArgumentParser(description='Snakemake arguments for ntrfc')
 parser.add_argument('--inputfiles', nargs='+', help='list of input files')
 parser.add_argument('--outputfiles', nargs='+', help='list of output files')
-parser.add_argument('--paramfile', type=str, help='path to paramfile')
-parser.add_argument('--configfile', type=str, help='path to configfile')
+parser.add_argument('--paramfile', type=str, help='templatepath to paramfile')
+parser.add_argument('--configfile', type=str, help='templatepath to configfile')
 
 
 args = parser.parse_args()
