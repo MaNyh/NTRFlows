@@ -1,7 +1,6 @@
-import pdb
 from snakemake.utils import validate
+from snakemake.utils import Paramspace
 import pandas as pd
-
 
 configfile : "config/config.yaml"
 validate(config,"schemas/config.schema.yaml")
@@ -10,23 +9,30 @@ params = pd.read_csv("config/params.tsv",sep="\t")
 validate(params, "schemas/param.schema.yaml")
 
 
+paramspace = Paramspace(params)
+paramspace.param_sep="~"
+# the wildcardpattern is dependend on the keys defined in case_params.tv
+# the pattern needs to contain all params and therefore the length has to be adapted
+NUMPARAMS = len(paramspace.dataframe.keys())
+if NUMPARAMS==1:
+    paramspace.pattern="{}"
+elif NUMPARAMS>1:
+    paramspace.pattern="{}_" + (NUMPARAMS - 2) * "{}_" + "{}"
+
+SIMS = list(paramspace["id"])
+DEPS = list(paramspace["dependency"])
+SIMNAMES = list(paramspace.instance_patterns)
+
+
+assert len(SIMS)==len(set(SIMS)), "you need to use unique identifications for your simulations"
+
 include: "rules/common.smk"
 include: "rules/create.smk"
 include: "rules/prep.smk"
 include: "rules/execute.smk"
 include: "rules/post.smk"
 
-def get_post():
-    """
-    get a list of files that have to be created by the rule post
-    """
-    res = [f"results/simulations/{instance_pattern}/bladeloading.jpg"
-                                            for instance_pattern in paramspace.instance_patterns]
-    res += [f"results/simulations/{instance_pattern}/velocity_contour.jpg"
-                                            for instance_pattern in paramspace.instance_patterns]
-    res += [f"results/simulations/{instance_pattern}/residuals.jpg"
-                                            for instance_pattern in paramspace.instance_patterns]
-    return res
+
 
 rule all:
     input: get_post()
