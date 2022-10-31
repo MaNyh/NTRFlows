@@ -1,7 +1,7 @@
 import argparse
-from ntrfc.utils.filehandling.mesh import load_mesh
-from ntrfc.utils.geometry.pointcloud_methods import extract_geo_paras
-from ntrfc.utils.math.vectorcalc import vecAbs
+from ntrfc.filehandling.mesh import load_mesh
+from ntrfc.turbo.pointcloud_methods import extract_geo_paras
+from ntrfc.math.vectorcalc import vecAbs
 import matplotlib.pyplot as plt
 import pyvista as pv
 

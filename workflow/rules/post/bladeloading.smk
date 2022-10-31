@@ -2,7 +2,7 @@ rule bladeloading:
     input: f"results/simulations/{paramspace.wildcard_pattern}/vtk/BLADE.vtp"
     output: report(f"results/simulations/{paramspace.wildcard_pattern}/bladeloading.jpg",category="bladeloading")
     log: f"logs/{paramspace.wildcard_pattern}/bladeloading.log"
-    container: "library://nyhuma/ntrflows/ntr.sif:v0.0.1"
+    container: "library://nyhuma/ntrflows/ntr.sif:v0.1.0"
     threads: 1
     shell:
         """

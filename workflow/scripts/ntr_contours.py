@@ -1,5 +1,5 @@
 import argparse
-from ntrfc.utils.filehandling.mesh import load_mesh
+from ntrfc.filehandling.mesh import load_mesh
 import pyvista as pv
 
 pv.start_xvfb()

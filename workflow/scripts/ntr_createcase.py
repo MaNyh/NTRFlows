@@ -1,11 +1,10 @@
 import argparse
 import json
 import os
-import pdb
 import re
 import shutil
 
-from ntrfc.utils.filehandling.datafiles import inplace_change
+from ntrfc.filehandling.datafiles import inplace_change
 
 parser = argparse.ArgumentParser(description='Snakemake arguments for ntrfc')
 parser.add_argument('--inputfiles', nargs='+', help='list of input files')

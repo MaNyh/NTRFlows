@@ -2,7 +2,7 @@
 import re
 
 import argparse
-from ntrfc.utils.filehandling.datafiles import write_yaml_dict
+from ntrfc.filehandling.datafiles import write_yaml_dict
 
 parser = argparse.ArgumentParser(description='Snakemake arguments for ntr')
 parser.add_argument('--inputfile', nargs=1, help='input file')
