@@ -1,11 +1,12 @@
 # Snakemake workflow: `NTRFlows`
 
-[![Snakemake](https://img.shields.io/badge/snakemake-≥6.3.0-brightgreen.svg)](https://snakemake.github.io)
-[![GitHub actions status](https://github.com/MaNyh/NTRFlows/workflows/Tests/badge.svg?branch=main)](https://github.com/MaNyh/NTRFlows/actions?query=branch%3Amain+workflow%3ATests)
-
 NumericalTestRigFlows (NTRFlows)
 
-A Snakemake workflow for `parameterstudies in cfd-simulations`
+A Snakemake workflow for `parameterstudies in cfd-simulations`. 
+Any workflow in cfd-simulations is including steps in the configuration of configuration files (create), preprocessing steps (prep), the execution of the simulation (execute) and postprocessing steps (post).
+NTRFlows is a Snakemake-workflow developed with a simple compressor cascade simulation using OpenFOAM.
+It should be used as a blueprint for sustainable data-analysis'.
+The project is adaptable and any solver can be used.
 
 ## Installation of snakemake
 
