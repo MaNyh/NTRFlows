@@ -1,12 +1,4 @@
-image: continuumio/miniconda
-
-before_script:
-  - conda init
-  - source ~/.bashrc
-  - conda update -n base -c defaults conda
-  - conda install -n base -c conda-forge mamba
-  - mamba create -c conda-forge -c bioconda -n snakemake snakemake
-  - conda activate snakemake
+image: snakemake/snakemake:v7.15.1
 
 #test_linting:
 #  stage: test
