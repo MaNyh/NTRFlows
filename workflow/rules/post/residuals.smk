@@ -30,7 +30,7 @@ rule plot_residuals:
         time =  rules.log_residuals.output.time
     output:
         residuals = report(f"results/simulations/{paramspace.wildcard_pattern}/residuals.jpg",category="residual u")
-    container: "library://nyhuma/ntrflows/ntr.sif:v0.0.1"
+    container: "library://nyhuma/ntrflows/ntr.sif:0.2.2"
     log: f"logs/{paramspace.wildcard_pattern}/residualplot.log"
     shell:
         """

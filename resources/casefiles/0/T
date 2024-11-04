@@ -17,46 +17,49 @@ FoamFile
 
 dimensions      [0 0 0 1 0 0 0];
 
-internalField   uniform 293.15;
+internalField   uniform 290;
 
-Tinlet          293.15;
+Tinlet          290;
+Toutlet		    290;
 
 boundaryField
 {
-    INLET
+    inlet
     {
-        type            fixedValue;
+        type            waveTransmissive;
+        gamma           1.4;
+        fieldInf         $Tinlet;
+        lInf            0.001;
         value           uniform $Tinlet;
     }
-    OUTLET
+
+    outlet
     {
-        type            inletOutlet;
-        value           uniform $Tinlet;
-	    inletValue	    uniform $Tinlet;
-	    fieldInf        uniform $Tinlet;
-        lInf            0.01;
+        type            waveTransmissive;
+        gamma           1.4;
+        value           uniform $Toutlet;
     }
-    BLADE
+    blade_wall
     {
         type            zeroGradient;
     }
 
-    Z_lower
+    hub_periodic
+    {
+        type            zeroGradient ;
+    }
+
+    shroud_periodic
+    {
+        type            zeroGradient ;
+    }
+
+    ylower
     {
         type            cyclic;
     }
 
-    Z_upper
-    {
-        type            cyclic;
-    }
-
-    Y_lower
-    {
-        type            cyclic;
-    }
-
-    Y_upper
+    yupper
     {
         type            cyclic;
     }

@@ -15,27 +15,29 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+WRITEINTERVAL <CONFIG writeinterval CONFIG>;
+
 application     rhoPimpleFoam;
 
 startFrom       startTime;
 
 startTime       0;
 
-stopAt		    endTime;
+stopAt          endTime;
 
 endTime         <CONFIG endtime CONFIG>;
 
-deltaT          <CONFIG deltat CONFIG>;
+deltaT          1.0e-8;
 
 writeControl    adjustableRunTime;
 
-writeInterval   <CONFIG writeinterval CONFIG>;
+writeInterval   $WRITEINTERVAL;
 
 purgeWrite      2;
 
 writeFormat     ascii;
 
-writePrecision  16;
+writePrecision   16;
 
 writeCompression off;
 
@@ -43,75 +45,75 @@ timeFormat      general;
 
 timePrecision   16;
 
-runTimeModifiable false;
+runTimeModifiable yes;
 
 adjustTimeStep  on;
 
-maxCo           <CONFIG courantnumber CONFIG>;
+maxCo          0.9;
 
-libs (
-"libfieldFunctionObjects.so"
-"libsampling.so"
-);
+functions {
 
-
+	CourantNo1
+	{
+    	// Mandatory entries (unmodifiable)
+    	type        CourantNo;
+    	libs        (fieldFunctionObjects);
+	
+	    // Optional entries (runtime modifiable)
+	    //	rho         rho;
+    writeControl    adjustableRunTime;
+	writeInterval   $WRITEINTERVAL;
+	
+	// Optional (inherited) entries
+    	
+	}
 fieldAverage1
-    {
-        type            fieldAverage;
-        libs            ("libfieldFunctionObjects.so");
-        writeControl    writeTime;
-        startTime       1
+{
+    // Mandatory entries (unmodifiable)
+    type            fieldAverage;
+    libs            (fieldFunctionObjects);
+    writeControl    adjustableRunTime;
+    writeInterval $WRITEINTERVAL;
+    timeStart       <CONFIG startave CONFIG>;
+    timeEnd         1000;
+    // Mandatory entries (runtime modifiable)
+    fields
+    (
+    k{
+        mean        yes;
+        prime2Mean  no;
+        base        time;
+        }
 
-        fields
-        (
-              wallShearStress
-              {
-                mean true;
-                prime2Mean false;
-                base time;
-              }
-              rho
-              {
-                mean true;
-                prime2Mean false;
-                base	time;
-              }
+    rho
+        {
+        mean        yes;
+        prime2Mean  no;
+        base        time;
+        }
+    T
+        {
+        mean        yes;
+        prime2Mean  no;
+        base        time;
+        }
+    p
+        {
+        mean        yes;
+        prime2Mean  no;
+        base        time;
+        }
+    U
+        {
+        mean        yes;
+        prime2Mean  no;
+        base        time;
+        }
+    );
 
-	        U
-            {
-                mean        true;
-                prime2Mean  true;
-                base        time;
-            }
-
-            p
-            {
-              mean        true;
-              prime2Mean  true;
-              base        time;
-            }
-            T
-            {
-              mean        true;
-              prime2Mean  true;
-              base        time;
-            }
-            nut
-            {
-              mean        true;
-	          prime2Mean  true;
-              base        time;
-            }
-            alphat
-            {
-             mean 	      true;
-             prime2Mean	  true;
-             base 	      time;
-	        }
-
-	    );
-    }
+ }
 
 
+}
 
 // ************************************************************************* //

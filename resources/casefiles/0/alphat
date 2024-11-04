@@ -21,33 +21,33 @@ internalField   uniform 0.00001;
 
 boundaryField
 {
-    INLET
+    inlet
     {
         type            calculated;
     	value		    uniform 0.00001;
     }
-    OUTLET
+    outlet
     {
         type            calculated;
 	    value		    uniform 0.00001;
     }
-    BLADE
+    blade_wall
     {
-        type            zeroGradient;
+        type            zeroGradient ;
     }
-    Z_lower
+    hub_periodic
+    {
+        type            zeroGradient ;
+    }
+    shroud_periodic
+    {
+        type            zeroGradient ;
+    }
+    ylower
     {
         type            cyclic;
     }
-    Z_upper
-    {
-        type            cyclic;
-    }
-    Y_lower
-    {
-        type            cyclic;
-    }
-    Y_upper
+    yupper
     {
         type            cyclic;
     }

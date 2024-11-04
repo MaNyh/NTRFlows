@@ -13,6 +13,7 @@ paramspace = Paramspace(params)
 paramspace.param_sep="~"
 # the wildcardpattern is dependend on the keys defined in case_params.tv
 # the pattern needs to contain all params and therefore the length has to be adapted
+
 NUMPARAMS = len(paramspace.dataframe.keys())
 if NUMPARAMS==1:
     paramspace.pattern="{}"
@@ -32,11 +33,10 @@ include: "rules/prep.smk"
 include: "rules/execute.smk"
 include: "rules/post.smk"
 
-
-
 rule all:
     input: get_post()
 
+localrules: all, create_case, touch_independents, touch_dependents, write_caseconfig
 
 
 

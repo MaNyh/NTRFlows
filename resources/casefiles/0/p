@@ -17,46 +17,46 @@ FoamFile
 
 dimensions      [1 -1 -2 0 0 0 0];
 
-internalField   uniform <PARAM pressure_outlet PARAM>;
+internalField   uniform 101350;
+
+pinlet 101350;
+poutlet 101350;
 
 boundaryField
 {
-    INLET
+    inlet
     {
         type            waveTransmissive;
         gamma           1.4;
-	    value		    uniform 100000;
-
+        value           uniform $pinlet;
     }
-    OUTLET
+    outlet
     {
         type            waveTransmissive;
-        gamma		    1.4;
-        value		    uniform <PARAM pressure_outlet PARAM>;
-        fieldInf  	    <PARAM pressure_outlet PARAM>;
-        lInf            0.01;
+        psi             thermo:psi;
+        gamma           1.4;
+        lInf            0.001;
+        value           uniform $poutlet;
+        fieldInf        $poutlet;
     }
-    BLADE
+    hub_periodic
+    {
+        type            zeroGradient ;
+    }
+    blade_wall
     {
         type            zeroGradient;
     }
-
-    Z_lower
+    shroud_periodic
+    {
+        type            zeroGradient ;
+    }
+    ylower
     {
         type            cyclic;
     }
 
-    Z_upper
-    {
-        type            cyclic;
-    }
-
-    Y_lower
-    {
-        type            cyclic;
-    }
-
-    Y_upper
+    yupper
     {
         type            cyclic;
     }

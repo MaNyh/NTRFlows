@@ -2,12 +2,11 @@ rule prep_independent:
     input:
         case=rules.create_case.output,
         idepfile=get_independency_touchfile,
-        mesh=config["mesh"]
-
+        mesh="results/simulations/mesh.msh"
     output:
         pfile=temporary(f"results/touchfiles/{paramspace.wildcard_pattern}.preped"),
         mesh= temporary(f"results/simulations/{paramspace.wildcard_pattern}/mesh.msh"),
-        preped=[directory(f"results/simulations/{paramspace.wildcard_pattern}/processor{pid}/constant") for pid in range(config["processors"])]
+        preped=[directory(f"results/simulations/{paramspace.wildcard_pattern}/processor{pid}/constant") for pid in range(config['simulation']["processors"])]
     params:
         casedirs = f"results/simulations/{paramspace.wildcard_pattern}",
     log: f"logs/{paramspace.wildcard_pattern}/prep.log"
@@ -21,10 +20,10 @@ rule prep_independent:
         set +euo pipefail;. /opt/OpenFOAM/setImage_v2006.sh ;set -euo pipefail;
         cp {input.mesh} {params.casedirs}/mesh.msh
         cd {params.casedirs}
-        fluent3DMeshToFoam mesh.msh
+        gmshToFoam mesh.msh
         createPatch -overwrite
-        topoSet
-        decomposePar -force
+        checkMesh
+        decomposePar -force #force is needed as snakemake already prepared directories
         ) 2>&1 > {log}
         """
 
@@ -34,11 +33,11 @@ rule prep_dependent:
         case=rules.create_case.output,
         depfile=get_dependency_touchfile,
         dependency=get_dependency_solution,
-        mesh=config["mesh"]
+        mesh="results/simulations/mesh.msh"
     output:
         pfile=temporary(f"results/touchfiles/{paramspace.wildcard_pattern}.preped"),
         mesh= temporary(f"results/simulations/{paramspace.wildcard_pattern}/mesh.msh"),
-        preped=[directory(f"results/simulations/{paramspace.wildcard_pattern}/processor{pid}/constant") for pid in range(config["processors"])]
+        preped=[directory(f"results/simulations/{paramspace.wildcard_pattern}/processor{pid}/constant") for pid in range(config['simulation']["processors"])]
     params:
         casedirs = f"results/simulations/{paramspace.wildcard_pattern}",
         depdir= get_dependency_case
@@ -53,11 +52,11 @@ rule prep_dependent:
         set +euo pipefail;. /opt/OpenFOAM/setImage_v2006.sh ;set -euo pipefail;
         cp {input.mesh} {params.casedirs}/mesh.msh
         cd {params.casedirs}
-        fluent3DMeshToFoam mesh.msh
+        gmshToFoam mesh.msh
         createPatch -overwrite
-        mapFields ../{params.depdir} -consistent -sourceTime 'latestTime' -parallelSource
-        topoSet
-        decomposePar -force
+        checkMesh
+        mapFields ../{params.depdir} -sourceTime 'latestTime' -parallelSource
+        decomposePar -force #force is needed as snakemake already prepared directories
         ) 2>&1 > {log}
         """
 

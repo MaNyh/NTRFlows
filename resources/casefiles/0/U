@@ -20,48 +20,52 @@ FoamFile
 
 dimensions      [0 1 -1 0 0 0 0];
 
-internalField   uniform (<PARAM velocity_inlet_u PARAM> <PARAM velocity_inlet_v PARAM> 0);
+uinlet <PARAM vel_u PARAM>;
+vinlet <PARAM vel_v PARAM>;
+winlet 0;
 
+internalField   uniform ($uinlet 0 0);
 
 boundaryField
 {
-    INLET
+    inlet
     {
         type            waveTransmissive;
-	    gamma		    1.4;
-        value           uniform (<PARAM velocity_inlet_u PARAM> <PARAM velocity_inlet_v PARAM> 0);
-	    fieldInf	    <PARAM velocity_inlet_u PARAM> <PARAM velocity_inlet_v PARAM> 0;
+        psi             thermo:psi;
+        gamma           1.4;
+        lInf            0.001;
+        fieldInf        ($uinlet $vinlet $winlet);
+        value           uniform ($uinlet $vinlet $winlet);
     }
 
-    OUTLET
+    outlet
     {
-        type            waveTransmissive;
-	    gamma		    1.4;
-        value           uniform (<PARAM velocity_inlet_u PARAM> <PARAM velocity_inlet_v PARAM> 0); //startwert only
-	    inletValue	    uniform (0 0 0);
+     	type            waveTransmissive;
+        gamma           1.4;
+        value           uniform ($uinlet 0 0);
     }
 
-    BLADE
+    blade_wall
     {
      	type            noSlip;
     }
 
-    Z_lower
+    hub_periodic
+    {
+        type            zeroGradient ;
+    }
+
+    shroud_periodic
+    {
+        type            zeroGradient ;
+    }
+
+    ylower
     {
         type            cyclic;
     }
 
-    Z_upper
-    {
-        type            cyclic;
-    }
-
-    Y_lower
-    {
-        type            cyclic;
-    }
-
-    Y_upper
+    yupper
     {
         type            cyclic;
     }

@@ -1,6 +1,15 @@
-mesh: "resources/mesh/fluent.msh"
-processors: 24
-deltat:  0.000000001
-courantnumber: 1
-endtime: 0.0001
-writeinterval: 0.0001
+mesh:
+  xoutlet : 0.12
+  xinlet : -0.06
+  pitch : 0.06
+  blade_yshift : 0.005
+  bl_size : 2.2e-6
+  di : 0.0014
+  span : 0.0004
+  le_progression: 0.004
+  te_progression: 0.006
+simulation:
+  processors: 12
+  startave: 0.004
+  endtime: 0.008
+  writeinterval: 0.001

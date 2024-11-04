@@ -3,29 +3,50 @@ $schema: "http://json-schema.org/draft-06/schema#"
 description: snakemake configuration file
 
 type: object
-
 properties:
   mesh:
-    type: string
-  processors:
-    description: nop
-    type: number
-  writeinterval:
-    description: nop
-    type: number
-  deltat:
-    description: nop
-    type: number
-  endtime:
-    description: nop
-    type: number
-  courantnumber:
-    description: nop
-    type: number
-
-additionalProperties: false
-
+    type: object
+    properties:
+      xoutlet:
+        type: number
+      xinlet:
+        type: number
+      pitch:
+        type: number
+      blade_yshift:
+        type: number
+      bl_size:
+        type: number
+      di:
+        type: number
+      span:
+        type: number
+      le_progression:
+        type: number
+      te_progression:
+        type: number
+    required:
+      - xoutlet
+      - xinlet
+      - pitch
+      - blade_yshift
+      - bl_size
+      - di
+      - span
+      - le_progression
+      - te_progression
+  simulation:
+    type: object
+    properties:
+      processors:
+        type: integer
+      endtime:
+        type: number
+      startave:
+        type: number
+    required:
+      - processors
+      - endtime
+      - startave
 required:
-    - courantnumber
-    - mesh
-    - processors
+  - mesh
