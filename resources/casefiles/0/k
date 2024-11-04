@@ -1,55 +1,56 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-| ========= | | \\ / F ield | OpenFOAM: The Open Source CFD Toolbox 	      |
-|  \\ / O peration | Version: v1906  					      |
-|   \\ / A nd | Web: www.OpenFOAM.com 					      |
-|    \\/ M anipulation | 						      |
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1612+                                |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
- FoamFile {
-    version 2.0;
-    format ascii;
-    class volScalarField;
-    object k;
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      k;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+kInlet <PARAM kinlet PARAM>;
 
-
-kInlet 0.1;
 dimensions [0 2 -2 0 0 0 0];
 
 internalField uniform $kInlet;
 
-
 boundaryField {
-    INLET
+
+    blade_wall
     {
-        type fixedValue;
-        value uniform $kInlet;
+        type            fixedValue;
+        value           uniform 1e-16 ;
     }
-    BLADE
+    inlet
     {
-        type kqRWallFunction;
-        value uniform $kInlet;
+        type            fixedValue;
+        value           uniform $kInlet;
     }
-    OUTLET
+    outlet
     {
-        type inletOutlet;
-        inletValue uniform 1;
-        value uniform $kInlet;
+        type            zeroGradient;
+        value           uniform 1;
     }
-    Z_lower
+    hub_periodic
+    {
+        type            zeroGradient ;
+    }
+    shroud_periodic
+    {
+        type            zeroGradient ;
+    }
+    ylower
     {
         type            cyclic;
     }
-    Z_upper
-    {
-        type            cyclic;
-    }
-    Y_lower
-    {
-        type            cyclic;
-    }
-    Y_upper
+    yupper
     {
         type            cyclic;
     }

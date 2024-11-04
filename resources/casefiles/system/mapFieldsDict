@@ -1,8 +1,8 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.3.0                                 |
-|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|  \\    /   O peration     | Version:  plus                                  |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
@@ -15,7 +15,18 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-patchMap        ( INLET INLET );
+patchMap
+(
+   blade_wall blade_wall
+   yupper yupper
+   shroud_periodic shroud_periodic
+   ylower ylower
+   hub_periodic hub_periodic
+);
 
-cuttingPatches  (  );
+cuttingPatches
+(
 
+);
+
+// ************************************************************************* //

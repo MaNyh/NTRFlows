@@ -18,11 +18,12 @@ FoamFile
 
 numberOfSubdomains <CONFIG processors CONFIG>;
 
-method          hierarchical;
+method          simple;
 
 simpleCoeffs
 {
-
+    n               (<CONFIG processors CONFIG> 1 1);
+    delta           0.001;
 }
 
 hierarchicalCoeffs

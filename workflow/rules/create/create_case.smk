@@ -6,7 +6,7 @@ rule create_case:
     output:
         casefiles=[f"results/simulations/{paramspace.wildcard_pattern}/{file}" for file in ntrflow.casefiles]
     log: f"logs/{paramspace.wildcard_pattern}/create_case.log"
-    container: "library://nyhuma/ntrflows/ntr.sif:v0.0.1"
+    container: "library://nyhuma/ntrflows/ntr.sif:0.2.2"
     threads: 1
     shell:
         """

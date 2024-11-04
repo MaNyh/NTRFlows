@@ -13,18 +13,18 @@ properties:
     #
     # change part below according to used PARAM pattern in the casefiles
     #
-    pressure_outlet:
+    vel_v:
         description: used in parameterspace
         type: number
-        default: 130000
-    velocity_inlet_u:
+        default: 50
+    vel_u:
         description: used in parameterspace
         type: number
         default: 40
-    velocity_inlet_v:
+    kinlet:
         description: used in parameterspace
         type: number
-        default: 30
+        default: 40
     #
     #
     ########################################################################

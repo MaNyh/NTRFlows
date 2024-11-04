@@ -1,4 +1,2 @@
-id	velocity_inlet_u	velocity_inlet_v	pressure_outlet	dependency
-A1	30	40	100000	0
-A2	30	40	110000	0
-A3	30	40	120000	0
+id	vel_u	vel_v	dependency	kinlet
+A0	175.3377	0	0	40

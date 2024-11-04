@@ -5,7 +5,7 @@ import pdb
 import re
 import shutil
 
-from ntrfc.utils.filehandling.datafiles import inplace_change
+from ntrfc.filehandling.datafiles import inplace_change
 
 parser = argparse.ArgumentParser(description='Snakemake arguments for ntrfc')
 parser.add_argument('--inputfiles', nargs='+', help='list of input files')
@@ -25,7 +25,7 @@ with open(paramfile,"r") as fobj:
     paramdict = json.loads(fobj.read())
 
 with open(configfile,"r") as fobj:
-    configdict = json.loads(fobj.read())
+    configdict = json.loads(fobj.read())["simulation"]
 
 def find_paramconfig(files):
     params={"PARAM":[],

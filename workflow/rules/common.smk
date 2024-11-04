@@ -8,6 +8,7 @@ def np_encoder(object):
         return object.item()
 
 
+
 def get_indepentend_cases():
     independents = []
     for sim, dep in zip(SIMNAMES,DEPS):
@@ -62,13 +63,17 @@ def get_post():
     """
     get a list of files that have to be created by the rule post
     """
-    res = [f"results/simulations/{instance_pattern}/bladeloading.jpg"
+    res = []
+    res += [f"results/simulations/{instance_pattern}/bladeloading.jpg"
                                             for instance_pattern in paramspace.instance_patterns]
-    res += [f"results/simulations/{instance_pattern}/velocity_contour.jpg"
+    res += [f"results/simulations/{instance_pattern}/contours.jpg"
                                             for instance_pattern in paramspace.instance_patterns]
     res += [f"results/simulations/{instance_pattern}/residuals.jpg"
                                             for instance_pattern in paramspace.instance_patterns]
+    res += [f"results/simulations/{instance_pattern}/delta_profile.jpg"
+                                            for instance_pattern in paramspace.instance_patterns]
     return res
+
 
 
 class case:
@@ -84,10 +89,10 @@ class case:
         self.templatefiles = [ os.path.join(self.templatepath,file) for file in self.casefiles]
 
         self.resultfiles = {
-            "pressurefield" :[f"{proc}/{config['endtime']}/p" for proc in [f"processor{id}" for id in range(config["processors"])]],
-            "temperaturefield" :[f"{proc}/{config['endtime']}/T" for proc in[f"processor{id}" for id in range(config["processors"])]],
-            "velocityfield" :[f"{proc}/{config['endtime']}/U" for proc in [f"processor{id}" for id in range(config["processors"])]],
-            "densityfield" :[f"{proc}/{config['endtime']}/rho" for proc in[f"processor{id}" for id in range(config["processors"])]],
+            "pressurefield" :[f"{proc}/{config['simulation']['endtime']}/p" for proc in [f"processor{id}" for id in range(config['simulation']["processors"])]],
+            "temperaturefield" :[f"{proc}/{config['simulation']['endtime']}/T" for proc in[f"processor{id}" for id in range(config['simulation']["processors"])]],
+            "velocityfield" :[f"{proc}/{config['simulation']['endtime']}/U" for proc in [f"processor{id}" for id in range(config['simulation']["processors"])]],
+            "densityfield" :[f"{proc}/{config['simulation']['endtime']}/rho" for proc in[f"processor{id}" for id in range(config['simulation']["processors"])]],
                 }
 
 ntrflow = case()
